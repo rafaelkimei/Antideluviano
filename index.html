@@ -66,12 +66,13 @@
             word-wrap: normal;
         }
         .sei-header-units {
-            font-size: 13pt;
-            font-family: Calibri;
+            font-size: 12pt;
+            font-family: Calibri, sans-serif;
             text-align: center;
             text-transform: uppercase;
             margin: 0;
-            font-weight: normal;
+            font-weight: bold;
+            line-height: 1.15;
         }
         .sei-align-left-simple {
             font-size: 12pt;
@@ -83,38 +84,38 @@
             font-size: 12pt;
             font-family: Calibri;
             text-align: right;
-            margin: 6pt;
+            margin: 6pt 0;
         }
         .sei-justified-indent {
             font-size: 12pt;
             font-family: Calibri;
             text-indent: 25mm;
             text-align: justify;
-            margin: 6pt 8px;
+            margin: 6pt 0;
         }
         .sei-paragraph-num-n1 {
             font-size: 12pt;
             font-family: Calibri;
             text-align: justify;
-            margin: 8px;
+            margin: 6pt 0;
         }
         .sei-paragraph-num-n2 {
             font-size: 12pt;
             font-family: Calibri;
             text-align: justify;
-            margin: 8px 8px 8px 25mm;
+            margin: 6pt 0 6pt 25mm;
         }
         .sei-roman-item {
             font-size: 12pt;
             font-family: Calibri;
             text-align: justify;
-            margin: 6pt 6pt 6pt 120px;
+            margin: 6pt 0 6pt 120px;
         }
         .sei-letter-item {
             font-size: 12pt;
             font-family: Calibri;
             text-align: justify;
-            margin: 6pt 6pt 6pt 120px;
+            margin: 6pt 0 6pt 150px;
         }
         .sei-citation {
             font-size: 10pt;
@@ -180,12 +181,18 @@
                     <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider border-b pb-1">1. Identificação Oficial</h3>
                     
                     <div class="grid grid-cols-1 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Número do Ofício</label>
+                            <input type="text" id="oficioNum" oninput="updatePreview()" 
+                                value="210/2026/SUPRO-INFRASA/DIREM-INFRASA/DIREX-INFRASA/CONSAD-INFRASA/AG-INFRASA" 
+                                class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none transition">
+                        </div>
 
                         <div class="grid grid-cols-2 gap-3">
                             <div>
                                 <label class="block text-xs font-semibold text-slate-700 mb-1">Número da O.S. / Família</label>
                                 <input type="text" id="osNum" oninput="updatePreview()" 
-                                    value="Ordem de Serviço - InfraSA O.S. nº 55 - Família 3 (Consultoria Técnica)" 
+                                    value="Ordem de Serviço - InfraSA O.S. nº 55- Família 3 (Consultoria Técnica)" 
                                     class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition">
                             </div>
                             <div>
@@ -212,9 +219,9 @@
                     <div>
                         <label class="block text-xs font-semibold text-slate-700 mb-1">Produto (Lista Selecionável)</label>
                         <select id="produtoSelect" onchange="updatePreview()" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition bg-white">
-                            <option value="Família 3, Produto 3.1.1. - Consultoria Técnica SUPRO;">Família 3, Produto 3.1.1. - Consultoria Técnica SUPRO</option>
-                            <option value="Família 1, Produto 1.2.1. - Apoio Operacional e Gestão;">Família 1, Produto 1.2.1. - Apoio Operacional e Gestão</option>
-                            <option value="Família 2, Produto 2.4.3. - Elaboração de Projetos e Custos;">Família 2, Produto 2.4.3. - Elaboração de Projetos e Custos</option>
+                            <option value="Família 3, Produto 3.1.1. Consultoria Técnica SUPRO;">Família 3, Produto 3.1.1. Consultoria Técnica SUPRO</option>
+                            <option value="Família 1, Produto 1.2.1. Apoio Operacional e Gestão;">Família 1, Produto 1.2.1. Apoio Operacional e Gestão</option>
+                            <option value="Família 2, Produto 2.4.3. Elaboração de Projetos e Custos;">Família 2, Produto 2.4.3. Elaboração de Projetos e Custos</option>
                             <option value="custom">-- Digitar Outro Produto --</option>
                         </select>
                         <input type="text" id="produtoCustom" oninput="updatePreview()" placeholder="Digite o produto customizado" class="hidden mt-2 w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none">
@@ -222,7 +229,7 @@
 
                     <div>
                         <label class="block text-xs font-semibold text-slate-700 mb-1">Identificador/Código da Descrição</label>
-                        <input type="text" id="descCodigo" oninput="updatePreview()" value="03 _11-26 SUPRO" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none">
+                        <input type="text" id="descCodigo" oninput="updatePreview()" value="03_11-26 SUPRO" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none">
                     </div>
 
                     <div>
@@ -230,15 +237,24 @@
                         <textarea id="demandaText" oninput="updatePreview()" rows="3" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none transition">O trabalho consiste em prestar consultoria jurídica rotineira às atividades da SUPRO, bem como às gerências GEPRO e GCUST, com ênfase na análise, elaboração e revisão de documentos em geral. Entre as principais atividades, destacam-se as consultorias nos seguintes assuntos:</textarea>
                     </div>
 
-                    <!-- List Items Toggle/Edit -->
+                    <!-- Incisos Romanos -->
                     <div class="bg-slate-50 p-3 rounded-lg border border-slate-200 space-y-2">
-                        <span class="text-xs font-semibold text-slate-600 block mb-1"><i class="fa-solid fa-list-check"></i> Atividades em Incisos (Romano)</span>
-                        <textarea id="incisosText" oninput="updatePreview()" rows="5" class="w-full p-2 text-xs border border-slate-300 rounded font-mono">Gestão dos Contratos, Termos de Credenciamento, Termos de Colaboração e Termos de Execução Descentralizada;
+                        <span class="text-xs font-semibold text-slate-600 block mb-1"><i class="fa-solid fa-list-check"></i> Atividades Principais (Incisos I, II, III...)</span>
+                        <textarea id="incisosText" oninput="updatePreview()" rows="6" class="w-full p-2 text-xs border border-slate-300 rounded font-mono">Gestão dos Contratos, Termos de Credenciamento, Termos de Colaboração e Termos de Execução Descentralizada;
 Processos Administrativos gerais das Unidades da SUPRO;
 Processos Administrativos Sancionatórios;
 Processos de Constituição de Débitos;
 Processos de Rescisão Contratual; e,
 Processos de Reconhecimento de Dívidas.</textarea>
+                    </div>
+
+                    <!-- Alíneas Letras -->
+                    <div class="bg-slate-50 p-3 rounded-lg border border-slate-200 space-y-2">
+                        <span class="text-xs font-semibold text-slate-600 block mb-1"><i class="fa-solid fa-list"></i> Expedientes Complementares (Alíneas a, b, c...)</span>
+                        <textarea id="alineasText" oninput="updatePreview()" rows="4" class="w-full p-2 text-xs border border-slate-300 rounded font-mono">Ordens de Serviço e respectivas Notas de Alteração;
+Padronização de documentos;
+Instrução e acompanhamento de Processos de Pagamentos; e,
+Órgãos de Controle e Auditoria.</textarea>
                     </div>
 
                     <div class="grid grid-cols-2 gap-3">
@@ -396,10 +412,23 @@ Processos de Reconhecimento de Dívidas.</textarea>
             }
         }
 
+        function toRoman(num) {
+            const lookup = { M: 1000, CM: 900, D: 500, CD: 400, C: 100, XC: 90, L: 50, XL: 40, X: 10, IX: 9, V: 5, IV: 4, I: 1 };
+            let roman = '';
+            for (let i in lookup) {
+                while (num >= lookup[i]) {
+                    roman += i;
+                    num -= lookup[i];
+                }
+            }
+            return roman;
+        }
+
         function updatePreview() {
             handleProdutoChange();
 
             // Form Values
+            const oficioNum = document.getElementById('oficioNum').value;
             const osNum = document.getElementById('osNum').value;
             const seiOS = document.getElementById('seiOS').value;
             const destinatario = document.getElementById('destinatario').value;
@@ -412,6 +441,7 @@ Processos de Reconhecimento de Dívidas.</textarea>
             const descCodigo = document.getElementById('descCodigo').value;
             const demandaText = document.getElementById('demandaText').value;
             const incisosRaw = document.getElementById('incisosText').value;
+            const alineasRaw = document.getElementById('alineasText').value;
             
             const especialista = document.getElementById('especialista').value;
             const prazoRelatorio = document.getElementById('prazoRelatorio').value;
@@ -425,77 +455,98 @@ Processos de Reconhecimento de Dívidas.</textarea>
             
             const ferrovia = document.querySelector('input[name="ferrovia"]:checked').value;
             const ferroviaHtml = ferrovia === 'geral' 
-                ? '<strong>FERROVIA/LOTE:&nbsp;&nbsp;</strong>( X )&nbsp; Geral&nbsp; &nbsp; (&nbsp; &nbsp;) EF-232 – Ferrovia Transnordestina.' 
-                : '<strong>FERROVIA/LOTE:&nbsp;&nbsp;</strong>(&nbsp; &nbsp;)&nbsp; Geral&nbsp; &nbsp; ( X ) EF-232 – Ferrovia Transnordestina.';
+                ? '<strong>FERROVIA/LOTE: </strong>(X) Geral ( ) EF-232-Ferrovia Transnordestina.' 
+                : '<strong>FERROVIA/LOTE: </strong>( ) Geral (X) EF-232-Ferrovia Transnordestina.';
             
             const multipla = document.querySelector('input[name="multipla"]:checked').value;
             const multiplaHtml = multipla === 'nao' 
-                ? '<strong>DEMANDA MULTIPLA?:</strong> ( ) SIM ( X ) NÃO SEQUÊNCIA' 
-                : '<strong>DEMANDA MULTIPLA?:</strong> ( X ) SIM ( ) NÃO SEQUÊNCIA';
+                ? '<strong>DEMANDA MULTIPLA?: </strong>( ) SIM (X) NÃO SEQUÊNCIA' 
+                : '<strong>DEMANDA MULTIPLA?: </strong>(X) SIM ( ) NÃO SEQUÊNCIA';
 
             const gestorNome = document.getElementById('gestorNome').value;
             const fiscalNome = document.getElementById('fiscalNome').value;
             const contratadoNome = document.getElementById('contratadoNome').value;
 
-            // Process Incisos
+            // Process Incisos (I, II, III...)
             const incisosList = incisosRaw.split('\n').filter(i => i.trim() !== '');
             let incisosHtml = '';
-            incisosList.forEach(inciso => {
-                incisosHtml += `<p class="Item_Inciso_Romano" style="text-align:justify; margin-top:6pt; margin-right:6pt; margin-bottom:6pt; margin-left:120px">${inciso.trim()}</p>`;
+            incisosList.forEach((inciso, index) => {
+                const roman = toRoman(index + 1);
+                incisosHtml += `<p class="sei-roman-item">${roman} - ${inciso.trim()}</p>`;
             });
 
-            // Build Full SEI HTML Template
+            // Process Alíneas (a, b, c...)
+            const alineasList = alineasRaw.split('\n').filter(i => i.trim() !== '');
+            let alineasHtml = '';
+            const letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'];
+            alineasList.forEach((alinea, index) => {
+                const letter = letters[index % letters.length];
+                alineasHtml += `<p class="sei-letter-item">${letter}) ${alinea.trim()}</p>`;
+            });
+
+            // Build Full SEI HTML Template matching exact PDF structure
             const htmlContent = `
+                <div class="sei-header-units">
+                    INFRA S.A.<br>
+                    ASSEMBLEIA GERAL<br>
+                    CONSELHO DE ADMINISTRAÇÃO<br>
+                    DIRETORIA EXECUTIVA<br>
+                    DIRETORIA DE EMPREENDIMENTOS<br>
+                    SUPERINTENDÊNCIA DE PROJETOS E CUSTOS
+                </div>
+                <p class="sei-align-left-simple"><strong>OFÍCIO N° ${oficioNum}</strong></p>
+                <p class="sei-align-left-simple">Brasília, na data da assinatura.</p>
                 <p class="sei-align-left-simple">&nbsp;</p>
- 
                 
-                <p class="sei-align-left-simple"><strong>Ao</strong><br><strong>${destinatario}</strong></p>
+                <p class="sei-align-left-simple">Ao<br><strong>${destinatario}</strong></p>
                 <p class="sei-align-left-simple">&nbsp;</p>
-                <p class="sei-align-left-simple"><strong>Assunto: ABERTURA DE DEMANDA.</strong></p>
+                <p class="sei-align-left-simple">Assunto: <strong>ABERTURA DE DEMANDA.</strong></p>
 
-                <p class="sei-align-left-simple"><strong>Referência:</strong> Edital nº 8/2024 - Lote 2 (SEI nº <a class="sei-link">8384586</a>);</p>
-                <p class="sei-align-left-simple" style="margin-left: 80px;">Termo de Referência (SEI nº <a class="sei-link">8385547</a>);</p>
-                <p class="sei-align-left-simple" style="margin-left: 80px;">Contrato nº 29/2024 (SEI nº <a class="sei-link">8765793</a>); e</p>
-                <p class="sei-align-left-simple" style="margin-left: 80px;">Termo Aditivo nº 1/2025 (SEI nº <a class="sei-link">10152314</a>).</p>
+                <p class="sei-align-left-simple">Referência: Edital nº 8/2024 - Lote 2 (SEI n° <a class="sei-link">8384586</a>);</p>
+                <p class="sei-align-left-simple" style="margin-left: 80px;">Termo de Referência (SEI n° <a class="sei-link">8385547</a>);</p>
+                <p class="sei-align-left-simple" style="margin-left: 80px;">Contrato n° 29/2024 (SEI n° <a class="sei-link">8765793</a>); e</p>
+                <p class="sei-align-left-simple" style="margin-left: 80px;">Termo Aditivo n° 1/2025 (SEI n° <a class="sei-link">10152314</a>).</p>
 
-                <p class="sei-justified-indent">&nbsp;</p>
-                <p class="sei-justified-indent">Senhor procurador/preposto,</p>
-                <p class="sei-justified-indent">&nbsp;</p>
+                <p class="sei-paragraph-num-n1">1. Senhor procurador/preposto,</p>
 
-                <p class="sei-paragraph-num-n1">Trata-se do Contrato nº 29/2024, firmado com o ${destinatario}, cujo objeto é a <em>"contratação de empresa de consultoria técnica especializada para prestação de serviços técnicos de engenharia com vistas ao desenvolvimento das atividades de competência legal da Superintendência de Projetos e Custos - SUPRO, vinculada à Diretoria de Empreendimentos - DIREM."</em></p>
+                <p class="sei-paragraph-num-n1">Trata-se do Contrato n° 29/2024, firmado com o <strong>CONSÓRCIO SSD-INFRA</strong>, cujo objeto é a <em>"contratação de empresa de consultoria técnica especializada para prestação de serviços técnicos de engenharia com vistas ao desenvolvimento das atividades de competência legal da Superintendência de Projetos e Custos - SUPRO, vinculada à Diretoria de Empreendimentos - DIREM."</em></p>
 
-                <p class="sei-paragraph-num-n1">Registra-se a abertura da demanda abaixo, pertencente à <strong>${osNum} (SEI nº <a class="sei-link">${seiOS}</a>)</strong>, a qual contempla os seguintes dados:</p>
+                <p class="sei-paragraph-num-n1">2. Registra-se a abertura da demanda abaixo, pertencente à <strong>${osNum} (SEI nº <a class="sei-link">${seiOS}</a>)</strong>, a qual contempla os seguintes dados:</p>
 
-                <p class="sei-paragraph-num-n1"><strong>PRODUTO: </strong>${produtoVal}</p>
-                <p class="sei-paragraph-num-n1"><strong>DESCRIÇÃO DA DEMANDA </strong>(${descCodigo}):</p>
+                <p class="sei-paragraph-num-n1">3. <strong>PRODUTO: </strong>${produtoVal}</p>
+                <p class="sei-paragraph-num-n1">4. <strong>DESCRIÇÃO DA DEMANDA </strong>(${descCodigo}):</p>
 
-                <p class="sei-paragraph-num-n2">${demandaText}</p>
+                <p class="sei-paragraph-num-n2">4.1. ${demandaText}</p>
 
                 ${incisosHtml}
 
-                <p class="sei-paragraph-num-n2">Por fim, ao final da demanda, as evidências e os registros das atividades realizadas devem ser apresentados por meio de relatório à SUPRO para avaliação.</p>
+                <p class="sei-paragraph-num-n2">4.2. Inclua-se também as consultorias jurídicas em apoio a elaboração e revisão de expedientes nos seguintes assuntos:</p>
 
-                <p class="sei-paragraph-num-n2"><strong>DISCIPLINAS/Especialista: </strong>${especialista}</p>
-                <p class="sei-paragraph-num-n2"><strong>PRAZO PARA ATENDIMENTO (apresentação do relatório): </strong>${prazoRelatorio}</p>
-                <p class="sei-paragraph-num-n2"><strong>PERÍODO: </strong>${periodoExec}</p>
+                ${alineasHtml}
+
+                <p class="sei-paragraph-num-n2">4.3. Por fim, ao final da demanda, as evidências e os registros das atividades realizadas devem ser apresentados por meio de relatório à SUPRO para avaliação.</p>
+
+                <p class="sei-paragraph-num-n2">4.4. <strong>DISCIPLINAS/Especialista: </strong>${especialista}</p>
+                <p class="sei-paragraph-num-n2">4.5. <strong>PRAZO PARA ATENDIMENTO (apresentação do relatório): </strong>${prazoRelatorio}</p>
+                <p class="sei-paragraph-num-n2">4.6. <strong>PERÍODO: </strong>${periodoExec}</p>
                 
-                <p class="sei-paragraph-num-n1"><strong>APOIO FISCAL: </strong>${apoioFiscal}</p>
-                <p class="sei-paragraph-num-n1"><strong>MATERIAL DE APOIO:</strong> ${materialApoio}</p>
+                <p class="sei-paragraph-num-n1">5. <strong>APOIO FISCAL: </strong>${apoioFiscal}</p>
+                <p class="sei-paragraph-num-n1">6. <strong>MATERIAL DE APOIO: </strong>${materialApoio}</p>
                 
-                <p class="sei-paragraph-num-n1"><strong>COMPLEXIDADE: </strong>${complexidade}</p>
+                <p class="sei-paragraph-num-n1">7. <strong>COMPLEXIDADE: </strong>${complexidade}</p>
                 <p class="sei-citation">${citacaoComplexidade}</p>
 
-                <p class="sei-paragraph-num-n1"><strong>RELEVÂNCIA: </strong>${relevancia}</p>
+                <p class="sei-paragraph-num-n1">8. <strong>RELEVÂNCIA: </strong>${relevancia}</p>
                 <p class="sei-citation">h) Produtos relacionados às demandas estabelecidas como prioritárias pela Superintendência e/ou Gerência;</p>
 
-                <p class="sei-paragraph-num-n1">${ferroviaHtml}</p>
-                <p class="sei-paragraph-num-n1">${multiplaHtml}</p>
+                <p class="sei-paragraph-num-n1">9. ${ferroviaHtml}</p>
+                <p class="sei-paragraph-num-n1">10. ${multiplaHtml}</p>
 
-                <p class="sei-paragraph-num-n1"><strong>ORIENTAÇÕES GERAIS:</strong></p>
-                <p class="sei-paragraph-num-n2">Ao receber a demanda, deve-se verificar a documentação recebida. Caso seja identificada incompletude na documentação enviada, deve avisar prontamente ao Gestor/Fiscal competente na SUPRO.</p>
-                <p class="sei-paragraph-num-n2">Poderão ser consultados também, a critério do prestador de serviço, além da equipe de apoio fiscal, os profissionais lotados na SUPRO e suas gerências.</p>
-                <p class="sei-paragraph-num-n2">Qualquer dúvida em relação à demanda, o Gestor/Fiscal competente na SUPRO deve ser comunicado tempestivamente.</p>
-                <p class="sei-paragraph-num-n2">Qualquer dificuldade para atender a demanda no prazo estipulado, o Gestor/Fiscal competente na SUPRO deve ser comunicado em tempo hábil.</p>
+                <p class="sei-paragraph-num-n1">11. <strong>ORIENTAÇÕES GERAIS:</strong></p>
+                <p class="sei-paragraph-num-n2">11.1. Ao receber a demanda, deve-se verificar a documentação recebida. Caso seja identificada incompletude na documentação enviada, deve avisar prontamente ao Gestor/Fiscal competente na SUPRO.</p>
+                <p class="sei-paragraph-num-n2">11.2. Poderão ser consultados também, a critério do prestador de serviço, além da equipe de apoio fiscal, os profissionais lotados na SUPRO e suas gerências.</p>
+                <p class="sei-paragraph-num-n2">11.3. Qualquer dúvida em relação à demanda, o Gestor/Fiscal competente na SUPRO deve ser comunicado tempestivamente.</p>
+                <p class="sei-paragraph-num-n2">11.4. Qualquer dificuldade para atender a demanda no prazo estipulado, o Gestor/Fiscal competente na SUPRO deve ser comunicado em tempo hábil.</p>
 
                 <p class="sei-justified-indent">&nbsp;</p>
                 <p class="sei-justified-indent">Atenciosamente,</p>
@@ -544,65 +595,46 @@ Processos de Reconhecimento de Dívidas.</textarea>
             selection.addRange(range);
 
             try {
-                const successful = document.execCommand('copy');
-                if (successful) {
-                    showToast();
-                } else {
-                    alert('Não foi possível copiar automaticamente. Selecione o texto e use Ctrl+C.');
-                }
+                document.execCommand('copy');
+                selection.removeAllRanges();
+                
+                const toast = document.getElementById('toast');
+                toast.classList.remove('translate-y-20', 'opacity-0');
+                setTimeout(() => {
+                    toast.classList.add('translate-y-20', 'opacity-0');
+                }, 3000);
             } catch (err) {
-                alert('Erro ao copiar: ' + err);
+                alert('Erro ao copiar conteúdo.');
             }
-
-            selection.removeAllRanges();
-        }
-
-        function showToast() {
-            const toast = document.getElementById('toast');
-            toast.classList.remove('translate-y-20', 'opacity-0');
-            toast.classList.add('translate-y-0', 'opacity-100');
-
-            setTimeout(() => {
-                toast.classList.remove('translate-y-0', 'opacity-100');
-                toast.classList.add('translate-y-20', 'opacity-0');
-            }, 4000);
         }
 
         function resetForm() {
-            if (confirm("Tem certeza que deseja redefinir os campos para o padrão do modelo?")) {
-                location.reload();
-            }
+            document.getElementById('oficioNum').value = '210/2026/SUPRO-INFRASA/DIREM-INFRASA/DIREX-INFRASA/CONSAD-INFRASA/AG-INFRASA';
+            document.getElementById('osNum').value = 'Ordem de Serviço - InfraSA O.S. nº 55- Família 3 (Consultoria Técnica)';
+            document.getElementById('seiOS').value = '11856808';
+            document.getElementById('destinatario').value = 'Consórcio CONSÓRCIO SSD-INFRA';
+            document.getElementById('produtoSelect').value = 'Família 3, Produto 3.1.1. Consultoria Técnica SUPRO;';
+            document.getElementById('descCodigo').value = '03_11-26 SUPRO';
+            document.getElementById('demandaText').value = 'O trabalho consiste em prestar consultoria jurídica rotineira às atividades da SUPRO, bem como às gerências GEPRO e GCUST, com ênfase na análise, elaboração e revisão de documentos em geral. Entre as principais atividades, destacam-se as consultorias nos seguintes assuntos:';
+            document.getElementById('incisosText').value = `Gestão dos Contratos, Termos de Credenciamento, Termos de Colaboração e Termos de Execução Descentralizada;\nProcessos Administrativos gerais das Unidades da SUPRO;\nProcessos Administrativos Sancionatórios;\nProcessos de Constituição de Débitos;\nProcessos de Rescisão Contratual; e,\nProcessos de Reconhecimento de Dívidas.`;
+            document.getElementById('alineasText').value = `Ordens de Serviço e respectivas Notas de Alteração;\nPadronização de documentos;\nInstrução e acompanhamento de Processos de Pagamentos; e,\nÓrgãos de Controle e Auditoria.`;
+            document.getElementById('especialista').value = 'Consultoria Jurídica (Jailson Mateus Cardoso).';
+            document.getElementById('prazoRelatorio').value = '30/11/2026.';
+            document.getElementById('periodoExec').value = '03/11/2026 a 06/11/2026.';
+            document.getElementById('apoioFiscal').value = 'Sérgio Nunes (fiscal técnico/ SUPRO) e Alessandra Espineli (fiscal técnico substituta/GEPRO).';
+            document.getElementById('materialApoio').value = 'Não enviado.';
+            document.getElementById('complexidade').value = 'Pouco complexo, conforme a disposição “f” do subitem 18.15.5.4 do TR, que estabelece:';
+            document.getElementById('citacaoComplexidade').value = 'f) Produtos relacionados às demandas envolvendo serviços técnicos de escritório com prazo de execução acima de 2 (duas) horas e de até 2 (dois) dias úteis.';
+            document.getElementById('relevancia').value = 'de média relevância, conforme a disposição "h" do subitem 18.11.5.8. do TR, que estabelece:';
+            document.getElementById('gestorNome').value = 'LARISSA DE SOUZA CORRÊA';
+            document.getElementById('fiscalNome').value = 'SÉRGIO NUNES DE FARIA';
+            document.getElementById('contratadoNome').value = 'HENALDO ALESSANDRO LUCIEN DA SILVA';
+            
+            updatePreview();
         }
 
-        // Initialize preview and setup synchronized scrolling
-        window.onload = function() {
-            updatePreview();
-
-            const formPanel = document.getElementById('formScrollPanel');
-            const previewPanel = document.getElementById('previewScrollPanel');
-
-            let isSyncing = false;
-
-            function syncScroll(source, target) {
-                if (isSyncing) return;
-                isSyncing = true;
-
-                const maxSourceScroll = source.scrollHeight - source.clientHeight;
-                const maxTargetScroll = target.scrollHeight - target.clientHeight;
-
-                if (maxSourceScroll > 0 && maxTargetScroll > 0) {
-                    const scrollRatio = source.scrollTop / maxSourceScroll;
-                    target.scrollTop = scrollRatio * maxTargetScroll;
-                }
-
-                setTimeout(() => {
-                    isSyncing = false;
-                }, 10);
-            }
-
-            formPanel.addEventListener('scroll', () => syncScroll(formPanel, previewPanel));
-            previewPanel.addEventListener('scroll', () => syncScroll(previewPanel, formPanel));
-        };
+        // Initialize preview on page load
+        window.onload = updatePreview;
     </script>
 </body>
 </html>
