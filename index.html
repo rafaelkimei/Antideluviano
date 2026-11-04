@@ -200,7 +200,12 @@
                     <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider border-b pb-1">1. Cabeçalho e Destinatário</h3>
                     
                     <div class="grid grid-cols-1 gap-4">
-
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Número do Ofício</label>
+                            <input type="text" id="oficioNum" data-target="el-oficio" oninput="updatePreview()" 
+                                value="210/2026/SUPRO-INFRASA/DIREM-INFRASA/DIREX-INFRASA/CONSAD-INFRASA/AG-INFRASA" 
+                                class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none transition">
+                        </div>
 
                         <div>
                             <label class="block text-xs font-semibold text-slate-700 mb-1">Destinatário (Consórcio)</label>
@@ -500,7 +505,17 @@ Instrução e acompanhamento de Processos de Pagamentos; e,
 
             // Build Full SEI HTML Template with data-id hooks for cross-highlighting
             const htmlContent = `
-
+                <div class="sei-header-units">
+                    INFRA S.A.<br>
+                    ASSEMBLEIA GERAL<br>
+                    CONSELHO DE ADMINISTRAÇÃO<br>
+                    DIRETORIA EXECUTIVA<br>
+                    DIRETORIA DE EMPREENDIMENTOS<br>
+                    SUPERINTENDÊNCIA DE PROJETOS E CUSTOS
+                </div>
+                <p class="sei-align-left-simple" data-id="el-oficio"><strong>OFÍCIO N° ${oficioNum}</strong></p>
+                <p class="sei-align-left-simple">Brasília, na data da assinatura.</p>
+                <p class="sei-align-left-simple">&nbsp;</p>
                 
                 <p class="sei-align-left-simple">Ao<br><strong data-id="el-destinatario">${destinatario}</strong></p>
                 <p class="sei-align-left-simple">&nbsp;</p>
@@ -599,7 +614,6 @@ Instrução e acompanhamento de Processos de Pagamentos; e,
                 const targetId = input.getAttribute('data-target');
                 if (!targetId) return;
 
-                // Quando o mouse entra em QUALQUER campo da esquerda, tira o foco do campo atual (se houver)
                 input.addEventListener('mouseenter', () => {
                     const activeEl = document.activeElement;
                     if (activeEl && activeEl !== input && ['INPUT', 'TEXTAREA', 'SELECT'].includes(activeEl.tagName)) {
@@ -622,7 +636,6 @@ Instrução e acompanhamento de Processos de Pagamentos; e,
                 const targetId = el.getAttribute('data-id');
                 if (!targetId) return;
 
-                // Quando o mouse passa por cima do texto à direita, força o campo anterior a perder o foco e foca o correspondente
                 el.addEventListener('mouseenter', () => {
                     highlightElement(targetId, true);
                     highlightInput(targetId, true);
