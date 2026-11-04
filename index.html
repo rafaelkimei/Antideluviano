@@ -35,6 +35,23 @@
     </script>
 
     <style>
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
         /* SEI Document Specific Formatting Styles */
         .sei-document {
             font-family: Calibri, sans-serif;
@@ -117,12 +134,12 @@
         }
     </style>
 </head>
-<body class="bg-slate-100 font-sans min-h-screen flex flex-col">
+<body class="bg-slate-100 font-sans h-screen flex flex-col overflow-hidden">
 
     <!-- Top Header Navigation -->
-    <header class="bg-slate-900 text-white px-6 py-4 flex flex-col md:flex-row justify-between items-center shadow-md gap-4">
+    <header class="bg-slate-900 text-white px-6 py-3 flex justify-between items-center shadow-md z-10 shrink-0">
         <div class="flex items-center gap-3">
-            <div class="bg-brand-500 text-white p-2.5 rounded-lg font-bold text-lg flex items-center justify-center w-10 h-10 shadow">
+            <div class="bg-brand-500 text-white p-2 rounded-lg font-bold text-lg flex items-center justify-center w-10 h-10">
                 <i class="fa-solid fa-file-contract"></i>
             </div>
             <div>
@@ -131,100 +148,92 @@
             </div>
         </div>
 
-        <!-- Navigation Tabs Selector -->
-        <div class="flex items-center bg-slate-800 p-1 rounded-xl border border-slate-700 shadow-inner">
-            <button onclick="switchTab('form')" id="btnTabForm" class="px-5 py-2 text-xs font-semibold rounded-lg transition-all flex items-center gap-2 bg-brand-600 text-white shadow">
-                <i class="fa-solid fa-pen-to-square"></i> 1. Preencher Parâmetros
-            </button>
-            <button onclick="switchTab('preview')" id="btnTabPreview" class="px-5 py-2 text-xs font-semibold rounded-lg transition-all flex items-center gap-2 text-slate-300 hover:text-white">
-                <i class="fa-solid fa-eye"></i> 2. Visualizar & Copiar
-            </button>
-        </div>
-
         <div class="flex items-center gap-3">
-            <button onclick="resetForm()" class="px-3.5 py-2 text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white rounded-lg transition border border-slate-700 flex items-center gap-2 shadow">
+            <button onclick="resetForm()" class="px-3 py-1.5 text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white rounded-md transition flex items-center gap-2">
                 <i class="fa-solid fa-rotate-right"></i> Redefinir
             </button>
-            <button onclick="copyRichText()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold rounded-lg shadow transition flex items-center gap-2">
-                <i class="fa-solid fa-copy"></i> Copiar para o SEI
+            <button onclick="copyRichText()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-medium rounded-lg shadow-sm transition flex items-center gap-2">
+                <i class="fa-solid fa-copy"></i> Copiar Formatado para o SEI
             </button>
         </div>
     </header>
 
-    <!-- Main Content Area -->
-    <main class="flex-1 max-w-6xl w-full mx-auto p-6">
+    <!-- Main Workspace Area -->
+    <div class="flex-1 flex overflow-hidden w-full">
 
-        <!-- TAB 1: FORMULÁRIO -->
-        <div id="tabFormContent" class="space-y-6">
-            <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200 space-y-6">
-                <div class="border-b pb-4 flex justify-between items-center">
-                    <div>
-                        <h2 class="font-bold text-slate-800 text-base flex items-center gap-2">
-                            <i class="fa-solid fa-sliders text-brand-600"></i> Parâmetros do Documento SEI
-                        </h2>
-                        <p class="text-xs text-slate-500 mt-0.5">Preencha os campos abaixo. As alterações serão refletidas automaticamente na visualização.</p>
-                    </div>
-                    <button onclick="switchTab('preview')" class="px-4 py-2 bg-brand-50 hover:bg-brand-100 text-brand-700 text-xs font-semibold rounded-lg border border-brand-200 transition flex items-center gap-2">
-                        Ver Documento Pronto <i class="fa-solid fa-arrow-right"></i>
-                    </button>
-                </div>
+        <!-- LEFT PANEL: Dynamic Form -->
+        <div class="w-1/2 bg-white border-r border-slate-200 flex flex-col h-full overflow-hidden shadow-inner">
+            <div class="p-4 bg-slate-50 border-b border-slate-200 flex justify-between items-center shrink-0">
+                <h2 class="font-semibold text-slate-700 flex items-center gap-2 text-sm uppercase tracking-wider">
+                    <i class="fa-solid fa-pen-to-square text-brand-600"></i> Parâmetros do Documento
+                </h2>
+                <span class="text-xs bg-brand-50 text-brand-700 font-medium px-2.5 py-1 rounded-full border border-brand-100">
+                    Preenchimento Rápido
+                </span>
+            </div>
 
-                <!-- Section 1: Identificação Oficial -->
-                <div class="space-y-4 pt-2">
+            <!-- Scrollable Form Container -->
+            <div id="formScrollPanel" class="flex-1 overflow-y-auto p-6 space-y-6">
+
+                <!-- Section: Identificação do Documento -->
+                <div class="space-y-4">
                     <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider border-b pb-1">1. Identificação Oficial</h3>
                     
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-xs font-semibold text-slate-700 mb-1">Número da O.S. / Família</label>
-                            <input type="text" id="osNum" oninput="updatePreview()" 
-                                value="Ordem de Serviço - InfraSA O.S. nº 55 - Família 3 (Consultoria Técnica)" 
-                                class="w-full px-3.5 py-2.5 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition bg-slate-50/50">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-semibold text-slate-700 mb-1">Nº SEI da O.S.</label>
-                            <input type="text" id="seiOS" oninput="updatePreview()" 
-                                value="11856808" 
-                                class="w-full px-3.5 py-2.5 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition bg-slate-50/50">
-                        </div>
-                    </div>
+                    <div class="grid grid-cols-1 gap-4">
 
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-700 mb-1">Destinatário (Consórcio)</label>
-                        <input type="text" id="destinatario" oninput="updatePreview()" 
-                            value="Consórcio CONSÓRCIO SSD-INFRA" 
-                            class="w-full px-3.5 py-2.5 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition bg-slate-50/50">
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-700 mb-1">Número da O.S. / Família</label>
+                                <input type="text" id="osNum" oninput="updatePreview()" 
+                                    value="Ordem de Serviço - InfraSA O.S. nº 55 - Família 3 (Consultoria Técnica)" 
+                                    class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-700 mb-1">Nº SEI da O.S.</label>
+                                <input type="text" id="seiOS" oninput="updatePreview()" 
+                                    value="11856808" 
+                                    class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Destinatário (Consórcio)</label>
+                            <input type="text" id="destinatario" oninput="updatePreview()" 
+                                value="Consórcio CONSÓRCIO SSD-INFRA" 
+                                class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition">
+                        </div>
                     </div>
                 </div>
 
-                <!-- Section 2: Dados da Demanda -->
-                <div class="space-y-4 pt-2">
+                <!-- Section: Detalhes da Demanda -->
+                <div class="space-y-4">
                     <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider border-b pb-1">2. Dados da Demanda</h3>
                     
                     <div>
                         <label class="block text-xs font-semibold text-slate-700 mb-1">Produto (Lista Selecionável)</label>
-                        <select id="produtoSelect" onchange="updatePreview()" class="w-full px-3.5 py-2.5 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition bg-white">
+                        <select id="produtoSelect" onchange="updatePreview()" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition bg-white">
                             <option value="Família 3, Produto 3.1.1. - Consultoria Técnica SUPRO;">Família 3, Produto 3.1.1. - Consultoria Técnica SUPRO</option>
                             <option value="Família 1, Produto 1.2.1. - Apoio Operacional e Gestão;">Família 1, Produto 1.2.1. - Apoio Operacional e Gestão</option>
                             <option value="Família 2, Produto 2.4.3. - Elaboração de Projetos e Custos;">Família 2, Produto 2.4.3. - Elaboração de Projetos e Custos</option>
                             <option value="custom">-- Digitar Outro Produto --</option>
                         </select>
-                        <input type="text" id="produtoCustom" oninput="updatePreview()" placeholder="Digite o produto customizado" class="hidden mt-2 w-full px-3.5 py-2.5 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none">
+                        <input type="text" id="produtoCustom" oninput="updatePreview()" placeholder="Digite o produto customizado" class="hidden mt-2 w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none">
                     </div>
 
                     <div>
                         <label class="block text-xs font-semibold text-slate-700 mb-1">Identificador/Código da Descrição</label>
-                        <input type="text" id="descCodigo" oninput="updatePreview()" value="03 _11-26 SUPRO" class="w-full px-3.5 py-2.5 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none bg-slate-50/50">
+                        <input type="text" id="descCodigo" oninput="updatePreview()" value="03 _11-26 SUPRO" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none">
                     </div>
 
                     <div>
                         <label class="block text-xs font-semibold text-slate-700 mb-1">Descrição Textual da Demanda</label>
-                        <textarea id="demandaText" oninput="updatePreview()" rows="3" class="w-full px-3.5 py-2.5 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none transition bg-slate-50/50">O trabalho consiste em prestar consultoria jurídica rotineira às atividades da SUPRO, bem como às gerências GEPRO e GCUST, com ênfase na análise, elaboração e revisão de documentos em geral. Entre as principais atividades, destacam-se as consultorias nos seguintes assuntos:</textarea>
+                        <textarea id="demandaText" oninput="updatePreview()" rows="3" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none transition">O trabalho consiste em prestar consultoria jurídica rotineira às atividades da SUPRO, bem como às gerências GEPRO e GCUST, com ênfase na análise, elaboração e revisão de documentos em geral. Entre as principais atividades, destacam-se as consultorias nos seguintes assuntos:</textarea>
                     </div>
 
                     <!-- List Items Toggle/Edit -->
-                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-2">
-                        <span class="text-xs font-semibold text-slate-700 block mb-1"><i class="fa-solid fa-list-check text-brand-600"></i> Atividades em Incisos (Romano) - Um por linha</span>
-                        <textarea id="incisosText" oninput="updatePreview()" rows="5" class="w-full p-3 text-xs border border-slate-300 rounded-lg font-mono bg-white">Gestão dos Contratos, Termos de Credenciamento, Termos de Colaboração e Termos de Execução Descentralizada;
+                    <div class="bg-slate-50 p-3 rounded-lg border border-slate-200 space-y-2">
+                        <span class="text-xs font-semibold text-slate-600 block mb-1"><i class="fa-solid fa-list-check"></i> Atividades em Incisos (Romano)</span>
+                        <textarea id="incisosText" oninput="updatePreview()" rows="5" class="w-full p-2 text-xs border border-slate-300 rounded font-mono">Gestão dos Contratos, Termos de Credenciamento, Termos de Colaboração e Termos de Execução Descentralizada;
 Processos Administrativos gerais das Unidades da SUPRO;
 Processos Administrativos Sancionatórios;
 Processos de Constituição de Débitos;
@@ -232,25 +241,25 @@ Processos de Rescisão Contratual; e,
 Processos de Reconhecimento de Dívidas.</textarea>
                     </div>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="grid grid-cols-2 gap-3">
                         <div>
                             <label class="block text-xs font-semibold text-slate-700 mb-1">Disciplinas / Especialista</label>
-                            <input type="text" id="especialista" oninput="updatePreview()" value="Consultoria Jurídica (Jailson Mateus Cardoso)." class="w-full px-3.5 py-2.5 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none bg-slate-50/50">
+                            <input type="text" id="especialista" oninput="updatePreview()" value="Consultoria Jurídica (Jailson Mateus Cardoso)." class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none">
                         </div>
                         <div>
                             <label class="block text-xs font-semibold text-slate-700 mb-1">Prazo do Relatório</label>
-                            <input type="text" id="prazoRelatorio" oninput="updatePreview()" value="30/11/2026." class="w-full px-3.5 py-2.5 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none bg-slate-50/50">
+                            <input type="text" id="prazoRelatorio" oninput="updatePreview()" value="30/11/2026." class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none">
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="grid grid-cols-2 gap-3">
                         <div>
                             <label class="block text-xs font-semibold text-slate-700 mb-1">Período de Execução</label>
-                            <input type="text" id="periodoExec" oninput="updatePreview()" value="03/11/2026 a 06/11/2026." class="w-full px-3.5 py-2.5 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none bg-slate-50/50">
+                            <input type="text" id="periodoExec" oninput="updatePreview()" value="03/11/2026 a 06/11/2026." class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none">
                         </div>
                         <div>
                             <label class="block text-xs font-semibold text-slate-700 mb-1">Material de Apoio</label>
-                            <select id="materialApoio" onchange="updatePreview()" class="w-full px-3.5 py-2.5 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none bg-white">
+                            <select id="materialApoio" onchange="updatePreview()" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none bg-white">
                                 <option value="Não enviado.">Não enviado.</option>
                                 <option value="Enviado em anexo.">Enviado em anexo.</option>
                                 <option value="Disponibilizado no drive.">Disponibilizado no drive.</option>
@@ -260,17 +269,17 @@ Processos de Reconhecimento de Dívidas.</textarea>
 
                     <div>
                         <label class="block text-xs font-semibold text-slate-700 mb-1">Apoio Fiscal</label>
-                        <input type="text" id="apoioFiscal" oninput="updatePreview()" value="Sérgio Nunes (fiscal técnico/ SUPRO) e Alessandra Espineli (fiscal técnico substituta/GEPRO)." class="w-full px-3.5 py-2.5 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none bg-slate-50/50">
+                        <input type="text" id="apoioFiscal" oninput="updatePreview()" value="Sérgio Nunes (fiscal técnico/ SUPRO) e Alessandra Espineli (fiscal técnico substituta/GEPRO)." class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none">
                     </div>
                 </div>
 
-                <!-- Section 3: Complexidade & Relevância -->
-                <div class="space-y-4 pt-2">
+                <!-- Section: Classificação e Parâmetros -->
+                <div class="space-y-4">
                     <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider border-b pb-1">3. Complexidade & Relevância</h3>
 
                     <div>
                         <label class="block text-xs font-semibold text-slate-700 mb-1">Nível de Complexidade</label>
-                        <select id="complexidade" onchange="updatePreview()" class="w-full px-3.5 py-2.5 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none bg-white">
+                        <select id="complexidade" onchange="updatePreview()" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none bg-white">
                             <option value="Pouco complexo, conforme a disposição “f” do subitem 18.15.5.4 do TR, que estabelece:">Pouco complexo (Alínea f - subitem 18.15.5.4)</option>
                             <option value="Médio complexo, conforme as diretrizes do Termo de Referência:">Médio complexo</option>
                             <option value="Altamente complexo, conforme subitem especial do TR:">Altamente complexo</option>
@@ -279,22 +288,22 @@ Processos de Reconhecimento de Dívidas.</textarea>
 
                     <div>
                         <label class="block text-xs font-semibold text-slate-700 mb-1">Texto de Citação (Complexidade)</label>
-                        <input type="text" id="citacaoComplexidade" oninput="updatePreview()" value="f) Produtos relacionados às demandas envolvendo serviços técnicos de escritório com prazo de execução acima de 2 (duas) horas e de até 2 (dois) dias úteis." class="w-full px-3.5 py-2.5 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none bg-slate-50/50">
+                        <input type="text" id="citacaoComplexidade" oninput="updatePreview()" value="f) Produtos relacionados às demandas envolvendo serviços técnicos de escritório com prazo de execução acima de 2 (duas) horas e de até 2 (dois) dias úteis." class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none">
                     </div>
 
                     <div>
                         <label class="block text-xs font-semibold text-slate-700 mb-1">Nível de Relevância</label>
-                        <select id="relevancia" onchange="updatePreview()" class="w-full px-3.5 py-2.5 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none bg-white">
+                        <select id="relevancia" onchange="updatePreview()" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none bg-white">
                             <option value="de média relevância, conforme a disposição &quot;h&quot; do subitem 18.11.5.8. do TR, que estabelece:">Média Relevância (Alínea h - subitem 18.11.5.8)</option>
                             <option value="de alta relevância, por se tratar de atividade prioritária da Superintendência:">Alta Relevância</option>
                             <option value="de baixa relevância, conforme escala padronizada:">Baixa Relevância</option>
                         </select>
                     </div>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
-                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
-                            <label class="block text-xs font-semibold text-slate-700 mb-2">Ferrovia / Lote</label>
-                            <div class="space-y-2">
+                    <div class="grid grid-cols-2 gap-3 pt-2">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Ferrovia / Lote</label>
+                            <div class="space-y-1 mt-1">
                                 <label class="flex items-center text-xs text-slate-700 gap-2 cursor-pointer">
                                     <input type="radio" name="ferrovia" value="geral" checked onchange="updatePreview()" class="text-brand-600 focus:ring-brand-500">
                                     ( X ) Geral
@@ -306,9 +315,9 @@ Processos de Reconhecimento de Dívidas.</textarea>
                             </div>
                         </div>
 
-                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
-                            <label class="block text-xs font-semibold text-slate-700 mb-2">Demanda Múltipla?</label>
-                            <div class="space-y-2">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Demanda Múltipla?</label>
+                            <div class="space-y-1 mt-1">
                                 <label class="flex items-center text-xs text-slate-700 gap-2 cursor-pointer">
                                     <input type="radio" name="multipla" value="nao" checked onchange="updatePreview()" class="text-brand-600 focus:ring-brand-500">
                                     ( ) SIM ( X ) NÃO SEQUÊNCIA
@@ -322,66 +331,53 @@ Processos de Reconhecimento de Dívidas.</textarea>
                     </div>
                 </div>
 
-                <!-- Section 4: Assinantes -->
-                <div class="space-y-4 pt-2">
+                <!-- Section: Assinantes -->
+                <div class="space-y-4">
                     <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider border-b pb-1">4. Assinaturas e Responsáveis</h3>
 
                     <div>
                         <label class="block text-xs font-semibold text-slate-700 mb-1">Gestor(a) do Contrato</label>
-                        <input type="text" id="gestorNome" oninput="updatePreview()" value="LARISSA DE SOUZA CORRÊA" class="w-full px-3.5 py-2.5 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none bg-slate-50/50">
+                        <input type="text" id="gestorNome" oninput="updatePreview()" value="LARISSA DE SOUZA CORRÊA" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none">
                     </div>
 
                     <div>
                         <label class="block text-xs font-semibold text-slate-700 mb-1">Fiscal Técnico / Superintendente</label>
-                        <input type="text" id="fiscalNome" oninput="updatePreview()" value="SÉRGIO NUNES DE FARIA" class="w-full px-3.5 py-2.5 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none bg-slate-50/50">
+                        <input type="text" id="fiscalNome" oninput="updatePreview()" value="SÉRGIO NUNES DE FARIA" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none">
                     </div>
 
                     <div>
                         <label class="block text-xs font-semibold text-slate-700 mb-1">Representante Legal do Contratado</label>
-                        <input type="text" id="contratadoNome" oninput="updatePreview()" value="HENALDO ALESSANDRO LUCIEN DA SILVA" class="w-full px-3.5 py-2.5 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none bg-slate-50/50">
+                        <input type="text" id="contratadoNome" oninput="updatePreview()" value="HENALDO ALESSANDRO LUCIEN DA SILVA" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none">
                     </div>
                 </div>
 
-                <div class="pt-4 flex justify-end">
-                    <button onclick="switchTab('preview')" class="px-6 py-3 bg-brand-600 hover:bg-brand-700 text-white font-medium text-sm rounded-xl shadow transition flex items-center gap-2">
-                        <i class="fa-solid fa-eye"></i> Avançar para Visualização e Cópia
-                    </button>
-                </div>
             </div>
         </div>
 
-        <!-- TAB 2: VISUALIZAÇÃO E CÓPIA -->
-        <div id="tabPreviewContent" class="hidden space-y-6">
-            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 flex flex-col md:flex-row justify-between items-center gap-4">
-                <div>
-                    <h2 class="font-bold text-slate-800 text-base flex items-center gap-2">
-                        <i class="fa-solid fa-file-lines text-emerald-600"></i> Documento Formatado (Padrão SEI)
-                    </h2>
-                    <p class="text-xs text-slate-500 mt-0.5">O layout abaixo está pronto. Basta clicar no botão para copiar com a formatação exata.</p>
+        <!-- RIGHT PANEL: Live Document Preview -->
+        <div class="w-1/2 bg-slate-200 flex flex-col h-full overflow-hidden">
+            <div class="p-4 bg-slate-200 border-b border-slate-300 flex justify-between items-center shrink-0">
+                <div class="flex items-center gap-2 text-slate-700 text-sm font-semibold">
+                    <i class="fa-solid fa-eye text-slate-500"></i> Visualização em Tempo Real (Padrão SEI)
                 </div>
-                <div class="flex items-center gap-3">
-                    <button onclick="switchTab('form')" class="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-xl transition flex items-center gap-2">
-                        <i class="fa-solid fa-pen-to-square"></i> Editar Parâmetros
-                    </button>
-                    <button onclick="copyRichText()" class="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold rounded-xl shadow transition flex items-center gap-2">
-                        <i class="fa-solid fa-copy"></i> Copiar Formatado para o SEI
-                    </button>
+                <div class="text-xs text-slate-500">
+                    Sempre atualizado com a formatação oficial
                 </div>
             </div>
 
-            <!-- Paper Sheet Simulator -->
-            <div class="flex justify-center pb-12">
-                <div class="bg-white shadow-xl rounded-sm p-16 min-h-[1050px] w-full max-w-[850px] border border-slate-300 text-black sei-document select-text" id="seiDocumentPreview">
+            <!-- Paper Sheet Simulator Container (Scrollable Panel) -->
+            <div id="previewScrollPanel" class="flex-1 overflow-y-auto p-8 flex justify-center">
+                <div class="bg-white shadow-xl rounded-sm p-12 min-h-[1000px] w-[800px] border border-slate-300 text-black sei-document select-text h-fit" id="seiDocumentPreview">
                     <!-- Dynamic Preview Content Injected Here -->
                 </div>
             </div>
         </div>
 
-    </main>
+    </div>
 
     <!-- Notification Toast -->
-    <div id="toast" class="fixed bottom-6 right-6 bg-emerald-700 text-white px-5 py-3.5 rounded-xl shadow-2xl flex items-center gap-3 transition-all duration-300 transform translate-y-20 opacity-0 z-50">
-        <i class="fa-solid fa-circle-check text-xl"></i>
+    <div id="toast" class="fixed bottom-6 right-6 bg-emerald-700 text-white px-5 py-3 rounded-xl shadow-2xl flex items-center gap-3 transition-all duration-300 transform translate-y-20 opacity-0 z-50">
+        <i class="fa-solid fa-circle-check text-lg"></i>
         <div>
             <p class="font-bold text-sm">HTML Copiado com Sucesso!</p>
             <p class="text-xs text-emerald-100">Cole diretamente no editor de texto do SEI com Ctrl+V.</p>
@@ -390,29 +386,6 @@ Processos de Reconhecimento de Dívidas.</textarea>
 
     <!-- Main Logic Script -->
     <script>
-        function switchTab(tabName) {
-            const formContent = document.getElementById('tabFormContent');
-            const previewContent = document.getElementById('tabPreviewContent');
-            const btnForm = document.getElementById('btnTabForm');
-            const btnPreview = document.getElementById('btnTabPreview');
-
-            if (tabName === 'form') {
-                formContent.classList.remove('hidden');
-                previewContent.classList.add('hidden');
-                
-                btnForm.className = "px-5 py-2 text-xs font-semibold rounded-lg transition-all flex items-center gap-2 bg-brand-600 text-white shadow";
-                btnPreview.className = "px-5 py-2 text-xs font-semibold rounded-lg transition-all flex items-center gap-2 text-slate-300 hover:text-white";
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            } else {
-                formContent.classList.add('hidden');
-                previewContent.classList.remove('hidden');
-                
-                btnPreview.className = "px-5 py-2 text-xs font-semibold rounded-lg transition-all flex items-center gap-2 bg-brand-600 text-white shadow";
-                btnForm.className = "px-5 py-2 text-xs font-semibold rounded-lg transition-all flex items-center gap-2 text-slate-300 hover:text-white";
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            }
-        }
-
         function handleProdutoChange() {
             const select = document.getElementById('produtoSelect');
             const customInput = document.getElementById('produtoCustom');
@@ -601,8 +574,34 @@ Processos de Reconhecimento de Dívidas.</textarea>
             }
         }
 
+        // Initialize preview and setup synchronized scrolling
         window.onload = function() {
             updatePreview();
+
+            const formPanel = document.getElementById('formScrollPanel');
+            const previewPanel = document.getElementById('previewScrollPanel');
+
+            let isSyncing = false;
+
+            function syncScroll(source, target) {
+                if (isSyncing) return;
+                isSyncing = true;
+
+                const maxSourceScroll = source.scrollHeight - source.clientHeight;
+                const maxTargetScroll = target.scrollHeight - target.clientHeight;
+
+                if (maxSourceScroll > 0 && maxTargetScroll > 0) {
+                    const scrollRatio = source.scrollTop / maxSourceScroll;
+                    target.scrollTop = scrollRatio * maxTargetScroll;
+                }
+
+                setTimeout(() => {
+                    isSyncing = false;
+                }, 10);
+            }
+
+            formPanel.addEventListener('scroll', () => syncScroll(formPanel, previewPanel));
+            previewPanel.addEventListener('scroll', () => syncScroll(previewPanel, formPanel));
         };
     </script>
 </body>
