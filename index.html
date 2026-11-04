@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gerador de Ofício SEI - Infra S.A. v1</title>
+    <title>Gerador de Ofício SEI - Infra S.A. v2</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons -->
@@ -80,12 +80,6 @@
             text-align: left;
             margin: 0;
         }
-        .sei-align-right {
-            font-size: 12pt;
-            font-family: Calibri;
-            text-align: right;
-            margin: 6pt 0;
-        }
         .sei-justified-indent {
             font-size: 12pt;
             font-family: Calibri;
@@ -136,14 +130,13 @@
 
         /* Classe de destaque dinâmico no documento */
         .preview-highlight {
-            background-color: #fef08a !important; /* Amarelo claro */
+            background-color: #fef08a !important;
             outline: 2px dashed #eab308 !important;
             transition: all 0.2s ease-in-out;
             padding: 2px 4px;
             border-radius: 3px;
         }
 
-        /* Interatividade nos elementos mapeados do preview */
         .sei-document [data-id] {
             cursor: pointer;
             border-radius: 2px;
@@ -446,7 +439,6 @@ Instrução e acompanhamento de Processos de Pagamentos; e,
         function updatePreview() {
             handleProdutoChange();
 
-            // Form Values
             const oficioNum = document.getElementById('oficioNum').value;
             const osNum = document.getElementById('osNum').value;
             const seiOS = document.getElementById('seiOS').value;
@@ -486,7 +478,6 @@ Instrução e acompanhamento de Processos de Pagamentos; e,
             const fiscalNome = document.getElementById('fiscalNome').value;
             const contratadoNome = document.getElementById('contratadoNome').value;
 
-            // Process Incisos (I, II, III...)
             const incisosList = incisosRaw.split('\n').filter(i => i.trim() !== '');
             let incisosHtml = '';
             incisosList.forEach((inciso, index) => {
@@ -494,7 +485,6 @@ Instrução e acompanhamento de Processos de Pagamentos; e,
                 incisosHtml += `<p class="sei-roman-item">${roman} - ${inciso.trim()}</p>`;
             });
 
-            // Process Alíneas (a, b, c...)
             const alineasList = alineasRaw.split('\n').filter(i => i.trim() !== '');
             let alineasHtml = '';
             const letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'];
@@ -503,7 +493,6 @@ Instrução e acompanhamento de Processos de Pagamentos; e,
                 alineasHtml += `<p class="sei-letter-item">${letter}) ${alinea.trim()}</p>`;
             });
 
-            // Build Full SEI HTML Template with data-id hooks for cross-highlighting
             const htmlContent = `
                 <div class="sei-header-units">
                     INFRA S.A.<br>
@@ -623,7 +612,6 @@ Instrução e acompanhamento de Processos de Pagamentos; e,
                 });
 
                 input.addEventListener('mouseleave', () => highlightElement(targetId, false));
-                
                 input.addEventListener('focus', () => highlightElement(targetId, true));
                 input.addEventListener('blur', () => highlightElement(targetId, false));
             });
