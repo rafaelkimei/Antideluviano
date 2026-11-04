@@ -126,4 +126,484 @@
                 <i class="fa-solid fa-file-contract"></i>
             </div>
             <div>
-                <h1 class="
+                <h1 class="font-bold text-lg leading-tight">Gerador de Ofício SEI</h1>
+                <p class="text-xs text-slate-400">Infra S.A. — Abertura de Demanda Automatizada</p>
+            </div>
+        </div>
+
+        <!-- Navigation Tabs Selector -->
+        <div class="flex items-center bg-slate-800 p-1 rounded-xl border border-slate-700 shadow-inner">
+            <button onclick="switchTab('form')" id="btnTabForm" class="px-5 py-2 text-xs font-semibold rounded-lg transition-all flex items-center gap-2 bg-brand-600 text-white shadow">
+                <i class="fa-solid fa-pen-to-square"></i> 1. Preencher Parâmetros
+            </button>
+            <button onclick="switchTab('preview')" id="btnTabPreview" class="px-5 py-2 text-xs font-semibold rounded-lg transition-all flex items-center gap-2 text-slate-300 hover:text-white">
+                <i class="fa-solid fa-eye"></i> 2. Visualizar & Copiar
+            </button>
+        </div>
+
+        <div class="flex items-center gap-3">
+            <button onclick="resetForm()" class="px-3.5 py-2 text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white rounded-lg transition border border-slate-700 flex items-center gap-2 shadow">
+                <i class="fa-solid fa-rotate-right"></i> Redefinir
+            </button>
+            <button onclick="copyRichText()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold rounded-lg shadow transition flex items-center gap-2">
+                <i class="fa-solid fa-copy"></i> Copiar para o SEI
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="flex-1 max-w-6xl w-full mx-auto p-6">
+
+        <!-- TAB 1: FORMULÁRIO -->
+        <div id="tabFormContent" class="space-y-6">
+            <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200 space-y-6">
+                <div class="border-b pb-4 flex justify-between items-center">
+                    <div>
+                        <h2 class="font-bold text-slate-800 text-base flex items-center gap-2">
+                            <i class="fa-solid fa-sliders text-brand-600"></i> Parâmetros do Documento SEI
+                        </h2>
+                        <p class="text-xs text-slate-500 mt-0.5">Preencha os campos abaixo. As alterações serão refletidas automaticamente na visualização.</p>
+                    </div>
+                    <button onclick="switchTab('preview')" class="px-4 py-2 bg-brand-50 hover:bg-brand-100 text-brand-700 text-xs font-semibold rounded-lg border border-brand-200 transition flex items-center gap-2">
+                        Ver Documento Pronto <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+
+                <!-- Section 1: Identificação Oficial -->
+                <div class="space-y-4 pt-2">
+                    <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider border-b pb-1">1. Identificação Oficial</h3>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Número da O.S. / Família</label>
+                            <input type="text" id="osNum" oninput="updatePreview()" 
+                                value="Ordem de Serviço - InfraSA O.S. nº 55 - Família 3 (Consultoria Técnica)" 
+                                class="w-full px-3.5 py-2.5 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition bg-slate-50/50">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Nº SEI da O.S.</label>
+                            <input type="text" id="seiOS" oninput="updatePreview()" 
+                                value="11856808" 
+                                class="w-full px-3.5 py-2.5 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition bg-slate-50/50">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Destinatário (Consórcio)</label>
+                        <input type="text" id="destinatario" oninput="updatePreview()" 
+                            value="Consórcio CONSÓRCIO SSD-INFRA" 
+                            class="w-full px-3.5 py-2.5 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition bg-slate-50/50">
+                    </div>
+                </div>
+
+                <!-- Section 2: Dados da Demanda -->
+                <div class="space-y-4 pt-2">
+                    <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider border-b pb-1">2. Dados da Demanda</h3>
+                    
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Produto (Lista Selecionável)</label>
+                        <select id="produtoSelect" onchange="updatePreview()" class="w-full px-3.5 py-2.5 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition bg-white">
+                            <option value="Família 3, Produto 3.1.1. - Consultoria Técnica SUPRO;">Família 3, Produto 3.1.1. - Consultoria Técnica SUPRO</option>
+                            <option value="Família 1, Produto 1.2.1. - Apoio Operacional e Gestão;">Família 1, Produto 1.2.1. - Apoio Operacional e Gestão</option>
+                            <option value="Família 2, Produto 2.4.3. - Elaboração de Projetos e Custos;">Família 2, Produto 2.4.3. - Elaboração de Projetos e Custos</option>
+                            <option value="custom">-- Digitar Outro Produto --</option>
+                        </select>
+                        <input type="text" id="produtoCustom" oninput="updatePreview()" placeholder="Digite o produto customizado" class="hidden mt-2 w-full px-3.5 py-2.5 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Identificador/Código da Descrição</label>
+                        <input type="text" id="descCodigo" oninput="updatePreview()" value="03 _11-26 SUPRO" class="w-full px-3.5 py-2.5 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none bg-slate-50/50">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Descrição Textual da Demanda</label>
+                        <textarea id="demandaText" oninput="updatePreview()" rows="3" class="w-full px-3.5 py-2.5 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none transition bg-slate-50/50">O trabalho consiste em prestar consultoria jurídica rotineira às atividades da SUPRO, bem como às gerências GEPRO e GCUST, com ênfase na análise, elaboração e revisão de documentos em geral. Entre as principais atividades, destacam-se as consultorias nos seguintes assuntos:</textarea>
+                    </div>
+
+                    <!-- List Items Toggle/Edit -->
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-2">
+                        <span class="text-xs font-semibold text-slate-700 block mb-1"><i class="fa-solid fa-list-check text-brand-600"></i> Atividades em Incisos (Romano) - Um por linha</span>
+                        <textarea id="incisosText" oninput="updatePreview()" rows="5" class="w-full p-3 text-xs border border-slate-300 rounded-lg font-mono bg-white">Gestão dos Contratos, Termos de Credenciamento, Termos de Colaboração e Termos de Execução Descentralizada;
+Processos Administrativos gerais das Unidades da SUPRO;
+Processos Administrativos Sancionatórios;
+Processos de Constituição de Débitos;
+Processos de Rescisão Contratual; e,
+Processos de Reconhecimento de Dívidas.</textarea>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Disciplinas / Especialista</label>
+                            <input type="text" id="especialista" oninput="updatePreview()" value="Consultoria Jurídica (Jailson Mateus Cardoso)." class="w-full px-3.5 py-2.5 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none bg-slate-50/50">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Prazo do Relatório</label>
+                            <input type="text" id="prazoRelatorio" oninput="updatePreview()" value="30/11/2026." class="w-full px-3.5 py-2.5 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none bg-slate-50/50">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Período de Execução</label>
+                            <input type="text" id="periodoExec" oninput="updatePreview()" value="03/11/2026 a 06/11/2026." class="w-full px-3.5 py-2.5 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none bg-slate-50/50">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Material de Apoio</label>
+                            <select id="materialApoio" onchange="updatePreview()" class="w-full px-3.5 py-2.5 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none bg-white">
+                                <option value="Não enviado.">Não enviado.</option>
+                                <option value="Enviado em anexo.">Enviado em anexo.</option>
+                                <option value="Disponibilizado no drive.">Disponibilizado no drive.</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Apoio Fiscal</label>
+                        <input type="text" id="apoioFiscal" oninput="updatePreview()" value="Sérgio Nunes (fiscal técnico/ SUPRO) e Alessandra Espineli (fiscal técnico substituta/GEPRO)." class="w-full px-3.5 py-2.5 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none bg-slate-50/50">
+                    </div>
+                </div>
+
+                <!-- Section 3: Complexidade & Relevância -->
+                <div class="space-y-4 pt-2">
+                    <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider border-b pb-1">3. Complexidade & Relevância</h3>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Nível de Complexidade</label>
+                        <select id="complexidade" onchange="updatePreview()" class="w-full px-3.5 py-2.5 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none bg-white">
+                            <option value="Pouco complexo, conforme a disposição “f” do subitem 18.15.5.4 do TR, que estabelece:">Pouco complexo (Alínea f - subitem 18.15.5.4)</option>
+                            <option value="Médio complexo, conforme as diretrizes do Termo de Referência:">Médio complexo</option>
+                            <option value="Altamente complexo, conforme subitem especial do TR:">Altamente complexo</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Texto de Citação (Complexidade)</label>
+                        <input type="text" id="citacaoComplexidade" oninput="updatePreview()" value="f) Produtos relacionados às demandas envolvendo serviços técnicos de escritório com prazo de execução acima de 2 (duas) horas e de até 2 (dois) dias úteis." class="w-full px-3.5 py-2.5 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none bg-slate-50/50">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Nível de Relevância</label>
+                        <select id="relevancia" onchange="updatePreview()" class="w-full px-3.5 py-2.5 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none bg-white">
+                            <option value="de média relevância, conforme a disposição &quot;h&quot; do subitem 18.11.5.8. do TR, que estabelece:">Média Relevância (Alínea h - subitem 18.11.5.8)</option>
+                            <option value="de alta relevância, por se tratar de atividade prioritária da Superintendência:">Alta Relevância</option>
+                            <option value="de baixa relevância, conforme escala padronizada:">Baixa Relevância</option>
+                        </select>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                            <label class="block text-xs font-semibold text-slate-700 mb-2">Ferrovia / Lote</label>
+                            <div class="space-y-2">
+                                <label class="flex items-center text-xs text-slate-700 gap-2 cursor-pointer">
+                                    <input type="radio" name="ferrovia" value="geral" checked onchange="updatePreview()" class="text-brand-600 focus:ring-brand-500">
+                                    ( X ) Geral
+                                </label>
+                                <label class="flex items-center text-xs text-slate-700 gap-2 cursor-pointer">
+                                    <input type="radio" name="ferrovia" value="ef232" onchange="updatePreview()" class="text-brand-600 focus:ring-brand-500">
+                                    ( X ) EF-232 – Ferrovia Transnordestina
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                            <label class="block text-xs font-semibold text-slate-700 mb-2">Demanda Múltipla?</label>
+                            <div class="space-y-2">
+                                <label class="flex items-center text-xs text-slate-700 gap-2 cursor-pointer">
+                                    <input type="radio" name="multipla" value="nao" checked onchange="updatePreview()" class="text-brand-600 focus:ring-brand-500">
+                                    ( ) SIM ( X ) NÃO SEQUÊNCIA
+                                </label>
+                                <label class="flex items-center text-xs text-slate-700 gap-2 cursor-pointer">
+                                    <input type="radio" name="multipla" value="sim" onchange="updatePreview()" class="text-brand-600 focus:ring-brand-500">
+                                    ( X ) SIM ( ) NÃO SEQUÊNCIA
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 4: Assinantes -->
+                <div class="space-y-4 pt-2">
+                    <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider border-b pb-1">4. Assinaturas e Responsáveis</h3>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Gestor(a) do Contrato</label>
+                        <input type="text" id="gestorNome" oninput="updatePreview()" value="LARISSA DE SOUZA CORRÊA" class="w-full px-3.5 py-2.5 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none bg-slate-50/50">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Fiscal Técnico / Superintendente</label>
+                        <input type="text" id="fiscalNome" oninput="updatePreview()" value="SÉRGIO NUNES DE FARIA" class="w-full px-3.5 py-2.5 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none bg-slate-50/50">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Representante Legal do Contratado</label>
+                        <input type="text" id="contratadoNome" oninput="updatePreview()" value="HENALDO ALESSANDRO LUCIEN DA SILVA" class="w-full px-3.5 py-2.5 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none bg-slate-50/50">
+                    </div>
+                </div>
+
+                <div class="pt-4 flex justify-end">
+                    <button onclick="switchTab('preview')" class="px-6 py-3 bg-brand-600 hover:bg-brand-700 text-white font-medium text-sm rounded-xl shadow transition flex items-center gap-2">
+                        <i class="fa-solid fa-eye"></i> Avançar para Visualização e Cópia
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 2: VISUALIZAÇÃO E CÓPIA -->
+        <div id="tabPreviewContent" class="hidden space-y-6">
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 flex flex-col md:flex-row justify-between items-center gap-4">
+                <div>
+                    <h2 class="font-bold text-slate-800 text-base flex items-center gap-2">
+                        <i class="fa-solid fa-file-lines text-emerald-600"></i> Documento Formatado (Padrão SEI)
+                    </h2>
+                    <p class="text-xs text-slate-500 mt-0.5">O layout abaixo está pronto. Basta clicar no botão para copiar com a formatação exata.</p>
+                </div>
+                <div class="flex items-center gap-3">
+                    <button onclick="switchTab('form')" class="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-xl transition flex items-center gap-2">
+                        <i class="fa-solid fa-pen-to-square"></i> Editar Parâmetros
+                    </button>
+                    <button onclick="copyRichText()" class="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold rounded-xl shadow transition flex items-center gap-2">
+                        <i class="fa-solid fa-copy"></i> Copiar Formatado para o SEI
+                    </button>
+                </div>
+            </div>
+
+            <!-- Paper Sheet Simulator -->
+            <div class="flex justify-center pb-12">
+                <div class="bg-white shadow-xl rounded-sm p-16 min-h-[1050px] w-full max-w-[850px] border border-slate-300 text-black sei-document select-text" id="seiDocumentPreview">
+                    <!-- Dynamic Preview Content Injected Here -->
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Notification Toast -->
+    <div id="toast" class="fixed bottom-6 right-6 bg-emerald-700 text-white px-5 py-3.5 rounded-xl shadow-2xl flex items-center gap-3 transition-all duration-300 transform translate-y-20 opacity-0 z-50">
+        <i class="fa-solid fa-circle-check text-xl"></i>
+        <div>
+            <p class="font-bold text-sm">HTML Copiado com Sucesso!</p>
+            <p class="text-xs text-emerald-100">Cole diretamente no editor de texto do SEI com Ctrl+V.</p>
+        </div>
+    </div>
+
+    <!-- Main Logic Script -->
+    <script>
+        function switchTab(tabName) {
+            const formContent = document.getElementById('tabFormContent');
+            const previewContent = document.getElementById('tabPreviewContent');
+            const btnForm = document.getElementById('btnTabForm');
+            const btnPreview = document.getElementById('btnTabPreview');
+
+            if (tabName === 'form') {
+                formContent.classList.remove('hidden');
+                previewContent.classList.add('hidden');
+                
+                btnForm.className = "px-5 py-2 text-xs font-semibold rounded-lg transition-all flex items-center gap-2 bg-brand-600 text-white shadow";
+                btnPreview.className = "px-5 py-2 text-xs font-semibold rounded-lg transition-all flex items-center gap-2 text-slate-300 hover:text-white";
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } else {
+                formContent.classList.add('hidden');
+                previewContent.classList.remove('hidden');
+                
+                btnPreview.className = "px-5 py-2 text-xs font-semibold rounded-lg transition-all flex items-center gap-2 bg-brand-600 text-white shadow";
+                btnForm.className = "px-5 py-2 text-xs font-semibold rounded-lg transition-all flex items-center gap-2 text-slate-300 hover:text-white";
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        function handleProdutoChange() {
+            const select = document.getElementById('produtoSelect');
+            const customInput = document.getElementById('produtoCustom');
+            if (select.value === 'custom') {
+                customInput.classList.remove('hidden');
+            } else {
+                customInput.classList.add('hidden');
+            }
+        }
+
+        function updatePreview() {
+            handleProdutoChange();
+
+            // Form Values
+            const osNum = document.getElementById('osNum').value;
+            const seiOS = document.getElementById('seiOS').value;
+            const destinatario = document.getElementById('destinatario').value;
+            
+            const produtoSelect = document.getElementById('produtoSelect');
+            const produtoVal = produtoSelect.value === 'custom' 
+                ? document.getElementById('produtoCustom').value 
+                : produtoSelect.value;
+            
+            const descCodigo = document.getElementById('descCodigo').value;
+            const demandaText = document.getElementById('demandaText').value;
+            const incisosRaw = document.getElementById('incisosText').value;
+            
+            const especialista = document.getElementById('especialista').value;
+            const prazoRelatorio = document.getElementById('prazoRelatorio').value;
+            const periodoExec = document.getElementById('periodoExec').value;
+            const apoioFiscal = document.getElementById('apoioFiscal').value;
+            const materialApoio = document.getElementById('materialApoio').value;
+            
+            const complexidade = document.getElementById('complexidade').value;
+            const citacaoComplexidade = document.getElementById('citacaoComplexidade').value;
+            const relevancia = document.getElementById('relevancia').value;
+            
+            const ferrovia = document.querySelector('input[name="ferrovia"]:checked').value;
+            const ferroviaHtml = ferrovia === 'geral' 
+                ? '<strong>FERROVIA/LOTE:&nbsp;&nbsp;</strong>( X )&nbsp; Geral&nbsp; &nbsp; (&nbsp; &nbsp;) EF-232 – Ferrovia Transnordestina.' 
+                : '<strong>FERROVIA/LOTE:&nbsp;&nbsp;</strong>(&nbsp; &nbsp;)&nbsp; Geral&nbsp; &nbsp; ( X ) EF-232 – Ferrovia Transnordestina.';
+            
+            const multipla = document.querySelector('input[name="multipla"]:checked').value;
+            const multiplaHtml = multipla === 'nao' 
+                ? '<strong>DEMANDA MULTIPLA?:</strong> ( ) SIM ( X ) NÃO SEQUÊNCIA' 
+                : '<strong>DEMANDA MULTIPLA?:</strong> ( X ) SIM ( ) NÃO SEQUÊNCIA';
+
+            const gestorNome = document.getElementById('gestorNome').value;
+            const fiscalNome = document.getElementById('fiscalNome').value;
+            const contratadoNome = document.getElementById('contratadoNome').value;
+
+            // Process Incisos
+            const incisosList = incisosRaw.split('\n').filter(i => i.trim() !== '');
+            let incisosHtml = '';
+            incisosList.forEach(inciso => {
+                incisosHtml += `<p class="Item_Inciso_Romano" style="text-align:justify; margin-top:6pt; margin-right:6pt; margin-bottom:6pt; margin-left:120px">${inciso.trim()}</p>`;
+            });
+
+            // Build Full SEI HTML Template
+            const htmlContent = `
+                <p class="sei-align-left-simple">&nbsp;</p>
+                <p class="sei-align-right">Brasília, na data da assinatura.</p>
+                
+                <p class="sei-align-left-simple"><strong>Ao</strong><br><strong>${destinatario}</strong></p>
+                <p class="sei-align-left-simple">&nbsp;</p>
+                <p class="sei-align-left-simple"><strong>Assunto: ABERTURA DE DEMANDA.</strong></p>
+
+                <p class="sei-align-left-simple"><strong>Referência:</strong> Edital nº 8/2024 - Lote 2 (SEI nº <a class="sei-link">8384586</a>);</p>
+                <p class="sei-align-left-simple" style="margin-left: 80px;">Termo de Referência (SEI nº <a class="sei-link">8385547</a>);</p>
+                <p class="sei-align-left-simple" style="margin-left: 80px;">Contrato nº 29/2024 (SEI nº <a class="sei-link">8765793</a>); e</p>
+                <p class="sei-align-left-simple" style="margin-left: 80px;">Termo Aditivo nº 1/2025 (SEI nº <a class="sei-link">10152314</a>).</p>
+
+                <p class="sei-justified-indent">&nbsp;</p>
+                <p class="sei-justified-indent">Senhor procurador/preposto,</p>
+                <p class="sei-justified-indent">&nbsp;</p>
+
+                <p class="sei-paragraph-num-n1">Trata-se do Contrato nº 29/2024, firmado com o ${destinatario}, cujo objeto é a <em>"contratação de empresa de consultoria técnica especializada para prestação de serviços técnicos de engenharia com vistas ao desenvolvimento das atividades de competência legal da Superintendência de Projetos e Custos - SUPRO, vinculada à Diretoria de Empreendimentos - DIREM."</em></p>
+
+                <p class="sei-paragraph-num-n1">Registra-se a abertura da demanda abaixo, pertencente à <strong>${osNum} (SEI nº <a class="sei-link">${seiOS}</a>)</strong>, a qual contempla os seguintes dados:</p>
+
+                <p class="sei-paragraph-num-n1"><strong>PRODUTO: </strong>${produtoVal}</p>
+                <p class="sei-paragraph-num-n1"><strong>DESCRIÇÃO DA DEMANDA </strong>(${descCodigo}):</p>
+
+                <p class="sei-paragraph-num-n2">${demandaText}</p>
+
+                ${incisosHtml}
+
+                <p class="sei-paragraph-num-n2">Por fim, ao final da demanda, as evidências e os registros das atividades realizadas devem ser apresentados por meio de relatório à SUPRO para avaliação.</p>
+
+                <p class="sei-paragraph-num-n2"><strong>DISCIPLINAS/Especialista: </strong>${especialista}</p>
+                <p class="sei-paragraph-num-n2"><strong>PRAZO PARA ATENDIMENTO (apresentação do relatório): </strong>${prazoRelatorio}</p>
+                <p class="sei-paragraph-num-n2"><strong>PERÍODO: </strong>${periodoExec}</p>
+                
+                <p class="sei-paragraph-num-n1"><strong>APOIO FISCAL: </strong>${apoioFiscal}</p>
+                <p class="sei-paragraph-num-n1"><strong>MATERIAL DE APOIO:</strong> ${materialApoio}</p>
+                
+                <p class="sei-paragraph-num-n1"><strong>COMPLEXIDADE: </strong>${complexidade}</p>
+                <p class="sei-citation">${citacaoComplexidade}</p>
+
+                <p class="sei-paragraph-num-n1"><strong>RELEVÂNCIA: </strong>${relevancia}</p>
+                <p class="sei-citation">h) Produtos relacionados às demandas estabelecidas como prioritárias pela Superintendência e/ou Gerência;</p>
+
+                <p class="sei-paragraph-num-n1">${ferroviaHtml}</p>
+                <p class="sei-paragraph-num-n1">${multiplaHtml}</p>
+
+                <p class="sei-paragraph-num-n1"><strong>ORIENTAÇÕES GERAIS:</strong></p>
+                <p class="sei-paragraph-num-n2">Ao receber a demanda, deve-se verificar a documentação recebida. Caso seja identificada incompletude na documentação enviada, deve avisar prontamente ao Gestor/Fiscal competente na SUPRO.</p>
+                <p class="sei-paragraph-num-n2">Poderão ser consultados também, a critério do prestador de serviço, além da equipe de apoio fiscal, os profissionais lotados na SUPRO e suas gerências.</p>
+                <p class="sei-paragraph-num-n2">Qualquer dúvida em relação à demanda, o Gestor/Fiscal competente na SUPRO deve ser comunicado tempestivamente.</p>
+                <p class="sei-paragraph-num-n2">Qualquer dificuldade para atender a demanda no prazo estipulado, o Gestor/Fiscal competente na SUPRO deve ser comunicado em tempo hábil.</p>
+
+                <p class="sei-justified-indent">&nbsp;</p>
+                <p class="sei-justified-indent">Atenciosamente,</p>
+                <p class="sei-justified-indent">&nbsp;</p>
+
+                <p class="sei-centered">
+                    <em>(assinado eletronicamente)</em><br>
+                    <strong>${gestorNome}</strong><br>
+                    Gestora do Contrato 29/24<br>
+                    Portaria nº 74 (SEI nº <a class="sei-link">11032342</a>)
+                </p>
+
+                <p class="sei-justified-indent">&nbsp;</p>
+                <p class="sei-justified-indent">De acordo,</p>
+                <p class="sei-justified-indent">&nbsp;</p>
+
+                <p class="sei-centered">
+                    <em>(assinado eletronicamente)</em><br>
+                    <strong>${fiscalNome}</strong><br>
+                    Superintendente de Projetos e Custos<br>
+                    Fiscal Técnico da Família 3 - Contrato nº 29/2024<br>
+                    Portaria nº 74 (SEI nº <a class="sei-link">11032342</a>)
+                </p>
+
+                <p class="sei-justified-indent">&nbsp;</p>
+                <p class="sei-justified-indent">Ciente,</p>
+                <p class="sei-justified-indent">&nbsp;</p>
+
+                <p class="sei-centered">
+                    <em>(assinado eletronicamente)</em><br>
+                    <strong>${contratadoNome}</strong><br>
+                    Representante Legal do Contratado (SEI nº <a class="sei-link">8845609</a>)
+                </p>
+            `;
+
+            document.getElementById('seiDocumentPreview').innerHTML = htmlContent;
+        }
+
+        function copyRichText() {
+            const container = document.getElementById('seiDocumentPreview');
+            
+            const range = document.createRange();
+            range.selectNode(container);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+
+            try {
+                const successful = document.execCommand('copy');
+                if (successful) {
+                    showToast();
+                } else {
+                    alert('Não foi possível copiar automaticamente. Selecione o texto e use Ctrl+C.');
+                }
+            } catch (err) {
+                alert('Erro ao copiar: ' + err);
+            }
+
+            selection.removeAllRanges();
+        }
+
+        function showToast() {
+            const toast = document.getElementById('toast');
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+
+            setTimeout(() => {
+                toast.classList.remove('translate-y-0', 'opacity-100');
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 4000);
+        }
+
+        function resetForm() {
+            if (confirm("Tem certeza que deseja redefinir os campos para o padrão do modelo?")) {
+                location.reload();
+            }
+        }
+
+        window.onload = function() {
+            updatePreview();
+        };
+    </script>
+</body>
+</html>
