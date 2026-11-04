@@ -396,7 +396,7 @@ Instrução e acompanhamento de Processos de Pagamentos; e,
                     <i class="fa-solid fa-eye text-slate-500"></i> Visualização em Tempo Real (Padrão SEI)
                 </div>
                 <div class="text-xs text-slate-500">
-                    Passe o mouse ou clique em qualquer trecho para achar o campo
+                    Passe o mouse no texto para focar o campo correspondente
                 </div>
             </div>
 
@@ -603,12 +603,10 @@ Instrução e acompanhamento de Processos de Pagamentos; e,
 
             document.getElementById('seiDocumentPreview').innerHTML = htmlContent;
             
-            // Reaplica os eventos de destaque em ambas as direções após reescrever o HTML
             bindHoverHighlight();
             bindPreviewInteractions();
         }
 
-        // Função que vincula o foco/hover do input esquerdo ao elemento do preview direito
         function bindHoverHighlight() {
             const inputs = document.querySelectorAll('#formScrollPanel input, #formScrollPanel textarea, #formScrollPanel select');
             
@@ -623,7 +621,6 @@ Instrução e acompanhamento de Processos de Pagamentos; e,
             });
         }
 
-        // Nova função: Vincula interações do preview da direita de volta para a esquerda
         function bindPreviewInteractions() {
             const previewElements = document.querySelectorAll('#seiDocumentPreview [data-id]');
 
@@ -631,17 +628,23 @@ Instrução e acompanhamento de Processos de Pagamentos; e,
                 const targetId = el.getAttribute('data-id');
                 if (!targetId) return;
 
-                // Hover na direita destaca o preview e o input correspondente
+                // Ao passar o mouse no texto à direita, ele transfere o foco para o input correspondente à esquerda
                 el.addEventListener('mouseenter', () => {
                     highlightElement(targetId, true);
                     highlightInput(targetId, true);
+                    
+                    const input = document.querySelector(`[data-target="${targetId}"]`);
+                    if (input && document.activeElement !== input) {
+                        input.focus({ preventScroll: true }); // Foca o input sem forçar pulos indesejados de scroll na página inteira
+                    }
                 });
+
                 el.addEventListener('mouseleave', () => {
                     highlightElement(targetId, false);
                     highlightInput(targetId, false);
                 });
 
-                // Clique na direita foca e rola a tela até o input correspondente à esquerda
+                // Mantém o clique para rolar até o input de forma centralizada
                 el.addEventListener('click', (e) => {
                     e.stopPropagation();
                     const input = document.querySelector(`[data-target="${targetId}"]`);
@@ -649,7 +652,6 @@ Instrução e acompanhamento de Processos de Pagamentos; e,
                         input.focus();
                         input.scrollIntoView({ behavior: 'smooth', block: 'center' });
                         
-                        // Efeito visual de destaque temporário no input
                         input.classList.add('ring-4', 'ring-brand-500', 'bg-brand-50');
                         setTimeout(() => {
                             input.classList.remove('ring-4', 'ring-brand-500', 'bg-brand-50');
@@ -729,7 +731,6 @@ Instrução e acompanhamento de Processos de Pagamentos; e,
             updatePreview();
         }
 
-        // Initialize preview and event bindings on page load
         window.onload = () => {
             updatePreview();
         };
