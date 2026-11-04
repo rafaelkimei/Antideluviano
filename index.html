@@ -614,16 +614,18 @@ Instrução e acompanhamento de Processos de Pagamentos; e,
                 const targetId = input.getAttribute('data-target');
                 if (!targetId) return;
 
-                input.addEventListener('mouseenter', () => highlightElement(targetId, true));
-                input.addEventListener('mouseleave', () => highlightElement(targetId, false));
-                
-                input.addEventListener('focus', () => {
+                // Quando o mouse entra em QUALQUER campo da esquerda, tira o foco do campo atual (se houver)
+                input.addEventListener('mouseenter', () => {
                     const activeEl = document.activeElement;
                     if (activeEl && activeEl !== input && ['INPUT', 'TEXTAREA', 'SELECT'].includes(activeEl.tagName)) {
                         activeEl.blur();
                     }
                     highlightElement(targetId, true);
                 });
+
+                input.addEventListener('mouseleave', () => highlightElement(targetId, false));
+                
+                input.addEventListener('focus', () => highlightElement(targetId, true));
                 input.addEventListener('blur', () => highlightElement(targetId, false));
             });
         }
@@ -635,16 +637,18 @@ Instrução e acompanhamento de Processos de Pagamentos; e,
                 const targetId = el.getAttribute('data-id');
                 if (!targetId) return;
 
+                // Quando o mouse passa por cima do texto à direita, força o campo anterior a perder o foco e foca o correspondente
                 el.addEventListener('mouseenter', () => {
                     highlightElement(targetId, true);
                     highlightInput(targetId, true);
                     
+                    const activeEl = document.activeElement;
+                    if (activeEl && ['INPUT', 'TEXTAREA', 'SELECT'].includes(activeEl.tagName)) {
+                        activeEl.blur();
+                    }
+
                     const input = document.querySelector(`[data-target="${targetId}"]`);
-                    if (input && document.activeElement !== input) {
-                        const activeEl = document.activeElement;
-                        if (activeEl && ['INPUT', 'TEXTAREA', 'SELECT'].includes(activeEl.tagName)) {
-                            activeEl.blur();
-                        }
+                    if (input) {
                         input.focus({ preventScroll: true });
                     }
                 });
