@@ -102,4 +102,79 @@
             font-size: 12pt;
             font-family: Calibri;
             text-align: justify;
-            margin:
+            margin: 8px 8px 8px 25mm;
+        }
+        .sei-roman-item {
+            font-size: 12pt;
+            font-family: Calibri;
+            text-align: justify;
+            margin: 6pt 6pt 6pt 120px;
+        }
+        .sei-letter-item {
+            font-size: 12pt;
+            font-family: Calibri;
+            text-align: justify;
+            margin: 6pt 6pt 6pt 120px;
+        }
+        .sei-citation {
+            font-size: 10pt;
+            font-family: Calibri;
+            margin: 5pt 0 5pt 160px;
+            text-align: justify;
+        }
+        .sei-centered {
+            font-size: 12pt;
+            font-family: Calibri;
+            text-align: center;
+            margin: 6pt;
+        }
+        .sei-link {
+            color: #0066cc;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body class="bg-slate-100 font-sans h-screen flex flex-col overflow-hidden">
+
+    <!-- Top Header Navigation -->
+    <header class="bg-slate-900 text-white px-6 py-3 flex justify-between items-center shadow-md z-10">
+        <div class="flex items-center gap-3">
+            <div class="bg-brand-500 text-white p-2 rounded-lg font-bold text-lg flex items-center justify-center w-10 h-10">
+                <i class="fa-solid fa-file-contract"></i>
+            </div>
+            <div>
+                <h1 class="font-bold text-lg leading-tight">Gerador de Ofício SEI</h1>
+                <p class="text-xs text-slate-400">Infra S.A. — Abertura de Demanda Automatizada</p>
+            </div>
+        </div>
+
+        <div class="flex items-center gap-3">
+            <button onclick="resetForm()" class="px-3 py-1.5 text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white rounded-md transition flex items-center gap-2">
+                <i class="fa-solid fa-rotate-right"></i> Redefinir
+            </button>
+            <button onclick="copyRichText()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-medium rounded-lg shadow-sm transition flex items-center gap-2">
+                <i class="fa-solid fa-copy"></i> Copiar Formatado para o SEI
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Workspace Area -->
+    <div class="flex-1 flex overflow-hidden">
+
+        <!-- LEFT PANEL: Dynamic Form -->
+        <div class="w-1/2 bg-white border-r border-slate-200 flex flex-col h-full shadow-inner">
+            <div class="p-4 bg-slate-50 border-b border-slate-200 flex justify-between items-center">
+                <h2 class="font-semibold text-slate-700 flex items-center gap-2 text-sm uppercase tracking-wider">
+                    <i class="fa-solid fa-pen-to-square text-brand-600"></i> Parâmetros do Documento
+                </h2>
+                <span class="text-xs bg-brand-50 text-brand-700 font-medium px-2.5 py-1 rounded-full border border-brand-100">
+                    Preenchimento Rápido
+                </span>
+            </div>
+
+            <!-- Scrollable Form Container -->
+            <div id="formScrollPanel" class="flex-1 overflow-y-auto p-6 space-y-6">
+
+                <!-- Section: Identificação do Documento -->
+                <div class="space-y-4">
+                    <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider border-b pb-1">
