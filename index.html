@@ -396,7 +396,7 @@ Instrução e acompanhamento de Processos de Pagamentos; e,
                     <i class="fa-solid fa-eye text-slate-500"></i> Visualização em Tempo Real (Padrão SEI)
                 </div>
                 <div class="text-xs text-slate-500">
-                    Passe o mouse no texto para focar o campo correspondente
+                    Passe o mouse no texto ou em outro campo para mudar o foco
                 </div>
             </div>
 
@@ -614,8 +614,17 @@ Instrução e acompanhamento de Processos de Pagamentos; e,
                 const targetId = input.getAttribute('data-target');
                 if (!targetId) return;
 
-                input.addEventListener('mouseenter', () => highlightElement(targetId, true));
+                // Ao passar o mouse ou focar em um campo da esquerda, tira o foco de qualquer outro campo ativo
+                input.addEventListener('mouseenter', () => {
+                    const activeEl = document.activeElement;
+                    if (activeEl && activeEl !== input && activeEl.tagName && ['INPUT', 'TEXTAREA', 'SELECT'].includes(activeEl.tagName)) {
+                        activeEl.blur();
+                    }
+                    highlightElement(targetId, true);
+                });
+
                 input.addEventListener('mouseleave', () => highlightElement(targetId, false));
+                
                 input.addEventListener('focus', () => highlightElement(targetId, true));
                 input.addEventListener('blur', () => highlightElement(targetId, false));
             });
@@ -628,14 +637,19 @@ Instrução e acompanhamento de Processos de Pagamentos; e,
                 const targetId = el.getAttribute('data-id');
                 if (!targetId) return;
 
-                // Ao passar o mouse no texto à direita, ele transfere o foco para o input correspondente à esquerda
+                // Ao passar o mouse no texto à direita, remove o foco de qualquer input à esquerda e foca o correspondente
                 el.addEventListener('mouseenter', () => {
                     highlightElement(targetId, true);
                     highlightInput(targetId, true);
                     
+                    const activeEl = document.activeElement;
+                    if (activeEl && activeEl.tagName && ['INPUT', 'TEXTAREA', 'SELECT'].includes(activeEl.tagName)) {
+                        activeEl.blur();
+                    }
+
                     const input = document.querySelector(`[data-target="${targetId}"]`);
-                    if (input && document.activeElement !== input) {
-                        input.focus({ preventScroll: true }); // Foca o input sem forçar pulos indesejados de scroll na página inteira
+                    if (input) {
+                        input.focus({ preventScroll: true });
                     }
                 });
 
@@ -644,9 +658,13 @@ Instrução e acompanhamento de Processos de Pagamentos; e,
                     highlightInput(targetId, false);
                 });
 
-                // Mantém o clique para rolar até o input de forma centralizada
                 el.addEventListener('click', (e) => {
                     e.stopPropagation();
+                    const activeEl = document.activeElement;
+                    if (activeEl && activeEl.tagName && ['INPUT', 'TEXTAREA', 'SELECT'].includes(activeEl.tagName)) {
+                        activeEl.blur();
+                    }
+
                     const input = document.querySelector(`[data-target="${targetId}"]`);
                     if (input) {
                         input.focus();
@@ -665,7 +683,7 @@ Instrução e acompanhamento de Processos de Pagamentos; e,
             const elements = document.querySelectorAll(`[data-id="${targetId}"]`);
             elements.forEach(el => {
                 if (enable) {
-                    el.classList.add('preview-highlight');
+                    el.classList.0 ? '' : el.classList.add('preview-highlight');
                 } else {
                     el.classList.remove('preview-highlight');
                 }
