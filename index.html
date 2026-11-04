@@ -142,6 +142,16 @@
             padding: 2px 4px;
             border-radius: 3px;
         }
+
+        /* Interatividade nos elementos mapeados do preview */
+        .sei-document [data-id] {
+            cursor: pointer;
+            border-radius: 2px;
+            transition: background-color 0.2s;
+        }
+        .sei-document [data-id]:hover {
+            background-color: rgba(254, 240, 138, 0.4);
+        }
     </style>
 </head>
 <body class="bg-slate-100 font-sans h-screen flex flex-col overflow-hidden">
@@ -386,7 +396,7 @@ Instrução e acompanhamento de Processos de Pagamentos; e,
                     <i class="fa-solid fa-eye text-slate-500"></i> Visualização em Tempo Real (Padrão SEI)
                 </div>
                 <div class="text-xs text-slate-500">
-                    Passe o mouse ou selecione um campo à esquerda para destacar
+                    Passe o mouse ou clique em qualquer trecho para achar o campo
                 </div>
             </div>
 
@@ -593,8 +603,9 @@ Instrução e acompanhamento de Processos de Pagamentos; e,
 
             document.getElementById('seiDocumentPreview').innerHTML = htmlContent;
             
-            // Reaplica os eventos de destaque após reescrever o HTML do preview
+            // Reaplica os eventos de destaque em ambas as direções após reescrever o HTML
             bindHoverHighlight();
+            bindPreviewInteractions();
         }
 
         // Função que vincula o foco/hover do input esquerdo ao elemento do preview direito
@@ -605,11 +616,46 @@ Instrução e acompanhamento de Processos de Pagamentos; e,
                 const targetId = input.getAttribute('data-target');
                 if (!targetId) return;
 
-                // Quando focar ou passar o mouse no campo do formulário
                 input.addEventListener('mouseenter', () => highlightElement(targetId, true));
                 input.addEventListener('mouseleave', () => highlightElement(targetId, false));
                 input.addEventListener('focus', () => highlightElement(targetId, true));
                 input.addEventListener('blur', () => highlightElement(targetId, false));
+            });
+        }
+
+        // Nova função: Vincula interações do preview da direita de volta para a esquerda
+        function bindPreviewInteractions() {
+            const previewElements = document.querySelectorAll('#seiDocumentPreview [data-id]');
+
+            previewElements.forEach(el => {
+                const targetId = el.getAttribute('data-id');
+                if (!targetId) return;
+
+                // Hover na direita destaca o preview e o input correspondente
+                el.addEventListener('mouseenter', () => {
+                    highlightElement(targetId, true);
+                    highlightInput(targetId, true);
+                });
+                el.addEventListener('mouseleave', () => {
+                    highlightElement(targetId, false);
+                    highlightInput(targetId, false);
+                });
+
+                // Clique na direita foca e rola a tela até o input correspondente à esquerda
+                el.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const input = document.querySelector(`[data-target="${targetId}"]`);
+                    if (input) {
+                        input.focus();
+                        input.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        
+                        // Efeito visual de destaque temporário no input
+                        input.classList.add('ring-4', 'ring-brand-500', 'bg-brand-50');
+                        setTimeout(() => {
+                            input.classList.remove('ring-4', 'ring-brand-500', 'bg-brand-50');
+                        }, 1200);
+                    }
+                });
             });
         }
 
@@ -620,6 +666,17 @@ Instrução e acompanhamento de Processos de Pagamentos; e,
                     el.classList.add('preview-highlight');
                 } else {
                     el.classList.remove('preview-highlight');
+                }
+            });
+        }
+
+        function highlightInput(targetId, enable) {
+            const inputs = document.querySelectorAll(`[data-target="${targetId}"]`);
+            inputs.forEach(input => {
+                if (enable) {
+                    input.classList.add('bg-brand-50', 'border-brand-500');
+                } else {
+                    input.classList.remove('bg-brand-50', 'border-brand-500');
                 }
             });
         }
