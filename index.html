@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gerador de Ofício SEI - Infra S.A. v15</title>
+    <title>Gerador de Ofício SEI - Infra S.A. v19</title>
     <!-- Tailwind CSS --> 
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons -->
@@ -214,7 +214,7 @@
                     <div>
                         <label class="block text-xs font-semibold text-slate-700 mb-1">Família</label>
                         <select id="familiaSelect" data-target="el-os" onchange="onFamiliaChange()" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition bg-white">
-                            <!-- Preenchido via script com base no segundo arquivo -->
+                            <!-- Preenchido via script -->
                         </select>
                     </div>
 
@@ -228,7 +228,7 @@
                     <div>
                         <label class="block text-xs font-semibold text-slate-700 mb-1">PRODUTO (Item 3)</label>
                         <select id="produtoSelect" data-target="el-produto" onchange="updatePreview()" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition bg-white">
-                            <!-- Alimentado dinamicamente pelas subfamílias da família selecionada -->
+                            <!-- Alimentado dinamicamente apenas com o nome do produto -->
                         </select>
                         <input type="text" id="produtoCustom" data-target="el-produto" oninput="updatePreview()" placeholder="Digite o produto customizado" class="hidden mt-2 w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none">
                     </div>
@@ -449,90 +449,89 @@ Instrução e acompanhamento de Processos de Pagamentos; e,
 
     <!-- Main Logic Script -->
     <script>
-        // Dados extraídos do segundo arquivo (Famílias e Subfamílias/Produtos)
+        // Dados extraídos do segundo arquivo (Famílias e Produtos isolados)
         const familiasData = [
             {
                 id: "Família 1",
                 nome: "FAMÍLIA 1 - ELABORAÇÃO/REVISÃO DE PROJETOS (BÁSICOS/EXECUTIVOS) DE ENGENHARIA",
                 produtos: [
-                    "Família 1, Produto 1.1. Elaboração/Revisão de Projetos de Engenharia (Disciplinas Diversas)",
-                    "Família 1, Produto 1.2. Elaboração/Revisão de Projetos (Interferências)",
-                    "Família 1, Produto 1.3. Elaboração/Revisão de Projetos (Obras de Arte Especiais)"
+                    "Elaboração/Revisão de Projetos de Engenharia (Disciplinas Diversas)",
+                    "Elaboração/Revisão de Projetos (Interferências)",
+                    "Elaboração/Revisão de Projetos (Obras de Arte Especiais)"
                 ]
             },
             {
                 id: "Família 2",
                 nome: "FAMÍLIA 2 - ANÁLISE DE PROJETOS (BÁSICOS/EXECUTIVOS) DE ENGENHARIA",
                 produtos: [
-                    "Família 2, Produto 2.1. Análise de Projetos (Disciplinas Diversas)",
-                    "Família 2, Produto 2.2. Análise de Projetos (Obras de Arte Especiais)"
+                    "Análise de Projetos (Disciplinas Diversas)",
+                    "Análise de Projetos (Obras de Arte Especiais)"
                 ]
             },
             {
                 id: "Família 3",
                 nome: "FAMÍLIA 3 - CONSULTORIA/CUSTOS",
                 produtos: [
-                    "Família 3, Produto 3.1. Consultoria Técnica SUPRO",
-                    "Família 3, Produto 3.2. Consultoria Especial Geral e para Revisão/Elaboração de Normativos Técnicos de Engenharia",
-                    "Família 3, Produto 3.3. Análise/Elaboração ou Revisão de Orçamento e Estudos de Custos de Engenharia"
+                    "Consultoria Técnica SUPRO",
+                    "Consultoria Especial Geral e para Revisão/Elaboração de Normativos Técnicos de Engenharia",
+                    "Análise/Elaboração ou Revisão de Orçamento e Estudos de Custos de Engenharia"
                 ]
             },
             {
                 id: "Família 4",
                 nome: "FAMÍLIA 4 - ENSAIOS E INVESTIGAÇÕES DE CAMPO",
                 produtos: [
-                    "Família 4, Produto 4.1. Levantamento Aerofotogramétricos",
-                    "Família 4, Produto 4.2. Levantamento Topográfico - Linear",
-                    "Família 4, Produto 4.3. Levantamento Topográfico - OAES - Estudo Hidrológico",
-                    "Família 4, Produto 4.4. Sondagem a Percussão",
-                    "Família 4, Produto 4.5. Sondagem Rotativa em Rocha Sã",
-                    "Família 4, Produto 4.6. Sondagem Rotativa em Rocha Alterada",
-                    "Família 4, Produto 4.7. Sondagem a Trado",
-                    "Família 4, Produto 4.8. Coleta de Material Diversos na Via Ferroviária",
-                    "Família 4, Produto 4.9. Transporte de Material Diverso Coletado - Rodovia em Leito Natural",
-                    "Família 4, Produto 4.10. Transporte de Material Diverso Coletado - Rodovia Pavimentada",
-                    "Família 4, Produto 4.11. Limite de Plasticidade",
-                    "Família 4, Produto 4.12. Limite de Liquidez",
-                    "Família 4, Produto 4.13. Análise Granulométrica sem Sedimentação (Peneiramento)",
-                    "Família 4, Produto 4.14. Massa Específica Real",
-                    "Família 4, Produto 4.15. Equivalente de Areia",
-                    "Família 4, Produto 4.16. Compactação: Energia Proctor Normal",
-                    "Família 4, Produto 4.17. Compactação: Energia AASHO Intermediária",
-                    "Família 4, Produto 4.18. Compactação: Energia AASHO Modificada",
-                    "Família 4, Produto 4.19. Índice Suporte Califórnia (1 Ponto - Proctor Normal)",
-                    "Família 4, Produto 4.20. Índice Suporte Califórnia (1 Ponto - AASHO Intermediária)",
-                    "Família 4, Produto 4.21. Índice Suporte Califórnia (1 Ponto - AASHO Modificada)",
-                    "Família 4, Produto 4.22. Triaxial Drenado por Corpo de Prova",
-                    "Família 4, Produto 4.23. Análise Granulométrica em Agregado Miúdo",
-                    "Família 4, Produto 4.24. Análise Granulométrica em Agregado Graúdo",
-                    "Família 4, Produto 4.25. Desgaste a Abrasão Los Angeles",
-                    "Família 4, Produto 4.26. Determinação de Percentagem de Carbonato de Cálcio",
-                    "Família 4, Produto 4.27. Abertura de Picadas (Facão e Foice)",
-                    "Família 4, Produto 4.28. Abertura de Picadas (Machado e Motosserra)",
-                    "Família 4, Produto 4.29. Execução de Linha de Prospecção Geofísica",
-                    "Família 4, Produto 4.30. Abertura de Poço de Inspeção",
-                    "Família 4, Produto 4.31. Ensaio de Palheta (Vane Test)",
-                    "Família 4, Produto 4.32. Determinação de Perda de Massa por Imersão",
-                    "Família 4, Produto 4.33. Extração de Amostra Indeformada em Blocos",
-                    "Família 4, Produto 4.34. Umidade Natural em Estufa",
-                    "Família 4, Produto 4.35. Cisalhamento Lento ou Rápido",
-                    "Família 4, Produto 4.36. Triaxial Não Drenado Pré-Adensado",
-                    "Família 4, Produto 4.37. Mini-MCV - Solo Compactado"
+                    "Levantamento Aerofotogramétricos",
+                    "Levantamento Topográfico - Linear",
+                    "Levantamento Topográfico - OAES - Estudo Hidrológico",
+                    "Sondagem a Percussão",
+                    "Sondagem Rotativa em Rocha Sã",
+                    "Sondagem Rotativa em Rocha Alterada",
+                    "Sondagem a Trado",
+                    "Coleta de Material Diversos na Via Ferroviária",
+                    "Transporte de Material Diverso Coletado - Rodovia em Leito Natural",
+                    "Transporte de Material Diverso Coletado - Rodovia Pavimentada",
+                    "Limite de Plasticidade",
+                    "Limite de Liquidez",
+                    "Análise Granulométrica sem Sedimentação (Peneiramento)",
+                    "Massa Específica Real",
+                    "Equivalente de Areia",
+                    "Compactação: Energia Proctor Normal",
+                    "Compactação: Energia AASHO Intermediária",
+                    "Compactação: Energia AASHO Modificada",
+                    "Índice Suporte Califórnia (1 Ponto - Proctor Normal)",
+                    "Índice Suporte Califórnia (1 Ponto - AASHO Intermediária)",
+                    "Índice Suporte Califórnia (1 Ponto - AASHO Modificada)",
+                    "Triaxial Drenado por Corpo de Prova",
+                    "Análise Granulométrica em Agregado Miúdo",
+                    "Análise Granulométrica em Agregado Graúdo",
+                    "Desgaste a Abrasão Los Angeles",
+                    "Determinação de Percentagem de Carbonato de Cálcio",
+                    "Abertura de Picadas (Facão e Foice)",
+                    "Abertura de Picadas (Machado e Motosserra)",
+                    "Execução de Linha de Prospecção Geofísica",
+                    "Abertura de Poço de Inspeção",
+                    "Ensaio de Palheta (Vane Test)",
+                    "Determinação de Perda de Massa por Imersão",
+                    "Extração de Amostra Indeformada em Blocos",
+                    "Umidade Natural em Estufa",
+                    "Cisalhamento Lento ou Rápido",
+                    "Triaxial Não Drenado Pré-Adensado",
+                    "Mini-MCV - Solo Compactado"
                 ]
             },
             {
                 id: "Família 5",
                 nome: "FAMÍLIA 5 - DESLOCAMENTO E HOSPEDAGEM",
                 produtos: [
-                    "Família 5, Produto 5.1. Passagens Aéreas",
-                    "Família 5, Produto 5.2. Diárias",
-                    "Família 5, Produto 5.3. Diária de Veículo Tipo Pick-up",
-                    "Família 5, Produto 5.4. Diária de Veículo Tipo Leve"
+                    "Passagens Aéreas",
+                    "Diárias",
+                    "Diária de Veículo Tipo Pick-up",
+                    "Diária de Veículo Tipo Leve"
                 ]
             }
         ];
 
-        // Inicializar os selects de Família e Produtos no carregamento
         function initFamiliasSelect() {
             const famSelect = document.getElementById('familiaSelect');
             famSelect.innerHTML = '';
@@ -542,7 +541,7 @@ Instrução e acompanhamento de Processos de Pagamentos; e,
                 opt.textContent = f.nome;
                 famSelect.appendChild(opt);
             });
-            famSelect.value = "Família 3"; // Padrão inicial conforme o formulário original
+            famSelect.value = "Família 3"; 
             onFamiliaChange();
         }
 
@@ -557,13 +556,13 @@ Instrução e acompanhamento de Processos de Pagamentos; e,
             if (familiaObj) {
                 familiaObj.produtos.forEach(prod => {
                     const opt = document.createElement('option');
-                    opt.value = prod + ";";
+                    // Deixando limpo apenas o texto descritivo do produto (com ponto final)
+                    opt.value = prod + ".";
                     opt.textContent = prod;
                     prodSelect.appendChild(opt);
                 });
             }
             
-            // Adicionar opção customizada
             const optCustom = document.createElement('option');
             optCustom.value = 'custom';
             optCustom.textContent = '-- Digitar Outro Produto --';
@@ -603,7 +602,6 @@ Instrução e acompanhamento de Processos de Pagamentos; e,
         }
 
         function handleSignatariosChange() {
-            // Gestor
             const gSelect = document.getElementById('gestorSelect');
             const gCustom = document.getElementById('gestorCustomContainer');
             if (gSelect.value === 'custom') {
@@ -612,7 +610,6 @@ Instrução e acompanhamento de Processos de Pagamentos; e,
                 gCustom.classList.add('hidden');
             }
 
-            // Fiscal
             const fSelect = document.getElementById('fiscalSelect');
             const fCustom = document.getElementById('fiscalCustomContainer');
             if (fSelect.value === 'custom') {
@@ -621,7 +618,6 @@ Instrução e acompanhamento de Processos de Pagamentos; e,
                 fCustom.classList.add('hidden');
             }
 
-            // Contratado
             const cSelect = document.getElementById('contratadoSelect');
             const cCustom = document.getElementById('contratadoCustomContainer');
             if (cSelect.value === 'custom') {
@@ -653,7 +649,6 @@ Instrução e acompanhamento de Processos de Pagamentos; e,
             const familiaSelect = document.getElementById('familiaSelect');
             const familiaText = familiaSelect.options[familiaSelect.selectedIndex].text;
             
-            // Texto unificado para a referência no item 2 do documento
             const osDisplayFormatted = `Ordem de Serviço - InfraSA O.S. nº ${osNum} - ${familiaText}`;
 
             const seiOS = document.getElementById('seiOS').value;
@@ -698,7 +693,6 @@ Instrução e acompanhamento de Processos de Pagamentos; e,
                 ? document.getElementById('unidadeSuproCustom').value
                 : unidadeSuproSelect.value;
 
-            // Dados do Gestor
             const gSelect = document.getElementById('gestorSelect');
             let gestorHtml = '';
             if (gSelect.value === 'custom') {
@@ -711,7 +705,6 @@ Instrução e acompanhamento de Processos de Pagamentos; e,
                 gestorHtml = `<em>(assinado eletronicamente)</em><br><strong>${parts[0]}</strong><br>${parts[1]}<br>${parts[2]}`;
             }
 
-            // Dados do Fiscal
             const fSelect = document.getElementById('fiscalSelect');
             let fiscalHtml = '';
             if (fSelect.value === 'custom') {
@@ -724,7 +717,6 @@ Instrução e acompanhamento de Processos de Pagamentos; e,
                 fiscalHtml = `<em>(assinado eletronicamente)</em><br><strong>${parts[0]}</strong><br>${parts[1]}<br>${parts[2]}`;
             }
 
-            // Dados do Contratado
             const cSelect = document.getElementById('contratadoSelect');
             let contratadoHtml = '';
             if (cSelect.value === 'custom') {
@@ -956,7 +948,7 @@ Instrução e acompanhamento de Processos de Pagamentos; e,
             onFamiliaChange();
             document.getElementById('seiOS').value = '11856808';
             document.getElementById('destinatario').value = 'Consórcio CONSÓRCIO SSD-INFRA';
-            document.getElementById('produtoSelect').value = 'Família 3, Produto 3.1. Consultoria Técnica SUPRO;';
+            document.getElementById('produtoSelect').value = 'Consultoria Técnica SUPRO.';
             document.getElementById('descCodigo').value = '03_11-26 SUPRO';
             document.getElementById('demandaText').value = 'O trabalho consiste em prestar consultoria jurídica rotineira às atividades da SUPRO, bem como às gerências GEPRO e GCUST, com ênfase na análise, elaboração e revisão de documentos em geral. Entre as principais atividades, destacam-se as consultorias nos seguintes assuntos:';
             document.getElementById('incisosText').value = `Gestão dos Contratos, Termos de Credenciamento, Termos de Colaboração e Termos de Execução Descentralizada;\nProcessos Administrativos gerais das Unidades da SUPRO;\nProcessos Administrativos Sancionatórios;\nProcessos de Constituição de Débitos;\nProcessos de Rescisão Contratual; e,\nProcessos de Reconhecimento de Dívidas.`;
