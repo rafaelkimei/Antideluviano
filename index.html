@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gerador de Ofício SEI - Infra S.A. v20</title>
+    <title>Gerador de Ofício SEI - Infra S.A. v00</title>
     <!-- Tailwind CSS --> 
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons -->
@@ -225,8 +225,6 @@
                         </select>
                     </div>
 
-
-
                     <div>
                         <label class="block text-xs font-semibold text-slate-700 mb-1">PRODUTO (Item 3)</label>
                         <select id="produtoSelect" data-target="el-produto" onchange="updatePreview()" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition bg-white">
@@ -237,7 +235,7 @@
 
                     <div>
                         <label class="block text-xs font-semibold text-slate-700 mb-1">Identificador/Código da Descrição (Item 4)</label>
-                        <input type="text" id="descCodigo" data-target="el-desccodigo" oninput="updatePreview()" value="03_11-26 SUPRO" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none">
+                        <input type="text" id="descCodigo" data-target="el-desccodigo" oninput="updatePreview()" value="03_11-26" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none">
                     </div>
 
                     <div>
@@ -558,7 +556,6 @@ Instrução e acompanhamento de Processos de Pagamentos; e,
             if (familiaObj) {
                 familiaObj.produtos.forEach(prod => {
                     const opt = document.createElement('option');
-                    // Deixando limpo apenas o texto descritivo do produto (com ponto final)
                     opt.value = prod + ".";
                     opt.textContent = prod;
                     prodSelect.appendChild(opt);
@@ -661,7 +658,17 @@ Instrução e acompanhamento de Processos de Pagamentos; e,
                 ? document.getElementById('produtoCustom').value 
                 : produtoSelect.value;
             
-            const descCodigo = document.getElementById('descCodigo').value;
+            const descCodigoInput = document.getElementById('descCodigo').value;
+            
+            // Pega o valor atual da Unidade Responsável para anexar ao final do identificador no documento da direita
+            const unidadeSuproSelect = document.getElementById('unidadeSuproSelect');
+            const unidadeSupro = unidadeSuproSelect.value === 'custom'
+                ? document.getElementById('unidadeSuproCustom').value
+                : unidadeSuproSelect.value;
+
+            // Combina o código base digitado com a unidade responsável selecionada/digitada
+            const descCodigo = `${descCodigoInput} ${unidadeSupro}`;
+
             const demandaText = document.getElementById('demandaText').value;
             const incisosRaw = document.getElementById('incisosText').value;
             const alineasRaw = document.getElementById('alineasText').value;
@@ -689,11 +696,6 @@ Instrução e acompanhamento de Processos de Pagamentos; e,
             const multiplaHtml = multipla === 'nao' 
                 ? '<strong>DEMANDA MULTIPLA?: </strong>( ) SIM (X) NÃO SEQUÊNCIA' 
                 : '<strong>DEMANDA MULTIPLA?: </strong>(X) SIM ( ) NÃO SEQUÊNCIA';
-
-            const unidadeSuproSelect = document.getElementById('unidadeSuproSelect');
-            const unidadeSupro = unidadeSuproSelect.value === 'custom'
-                ? document.getElementById('unidadeSuproCustom').value
-                : unidadeSuproSelect.value;
 
             const gSelect = document.getElementById('gestorSelect');
             let gestorHtml = '';
@@ -951,7 +953,7 @@ Instrução e acompanhamento de Processos de Pagamentos; e,
             document.getElementById('seiOS').value = '11856808';
             document.getElementById('destinatario').value = 'Consórcio CONSÓRCIO SSD-INFRA';
             document.getElementById('produtoSelect').value = 'Consultoria Técnica SUPRO.';
-            document.getElementById('descCodigo').value = '03_11-26 SUPRO';
+            document.getElementById('descCodigo').value = '03_11-26';
             document.getElementById('demandaText').value = 'O trabalho consiste em prestar consultoria jurídica rotineira às atividades da SUPRO, bem como às gerências GEPRO e GCUST, com ênfase na análise, elaboração e revisão de documentos em geral. Entre as principais atividades, destacam-se as consultorias nos seguintes assuntos:';
             document.getElementById('incisosText').value = `Gestão dos Contratos, Termos de Credenciamento, Termos de Colaboração e Termos de Execução Descentralizada;\nProcessos Administrativos gerais das Unidades da SUPRO;\nProcessos Administrativos Sancionatórios;\nProcessos de Constituição de Débitos;\nProcessos de Rescisão Contratual; e,\nProcessos de Reconhecimento de Dívidas.`;
             document.getElementById('alineasText').value = `Ordens de Serviço e respectivas Notas de Alteração;\nPadronização de documentos;\nInstrução e acompanhamento de Processos de Pagamentos; e,\nÓrgãos de Controle e Auditoria.`;
