@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gerador de Ofício SEI - Infra S.A. v0001</title>
+    <title>Gerador de Ofício SEI - Infra S.A. v0002</title>
     <!-- Tailwind CSS --> 
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons -->
@@ -556,6 +556,7 @@ Instrução e acompanhamento de Processos de Pagamentos; e,
 
         function initFamiliasSelect() {
             const famSelect = document.getElementById('familiaSelect');
+            if (!famSelect) return;
             famSelect.innerHTML = '';
             familiasData.forEach(f => {
                 const opt = document.createElement('option');
@@ -569,6 +570,7 @@ Instrução e acompanhamento de Processos de Pagamentos; e,
 
         function initComplexidadeSelect() {
             const compSelect = document.getElementById('complexidadeSelect');
+            if (!compSelect) return;
             compSelect.innerHTML = '';
             complexidadeData.forEach((item, index) => {
                 const opt = document.createElement('option');
@@ -576,15 +578,16 @@ Instrução e acompanhamento de Processos de Pagamentos; e,
                 opt.textContent = item.nivel;
                 compSelect.appendChild(opt);
             });
-            compSelect.value = 3; // Seleciona "Pouco complexo" por padrão (correspondente ao anterior)
+            compSelect.value = 3; // Seleciona "Pouco complexo" por padrão
             onComplexidadeChange();
         }
 
         function onComplexidadeChange() {
             const compSelect = document.getElementById('complexidadeSelect');
-            const selectedIndex = compSelect.value;
             const citacaoInput = document.getElementById('citacaoComplexidade');
+            if (!compSelect || !citacaoInput) return;
             
+            const selectedIndex = compSelect.value;
             if (complexidadeData[selectedIndex]) {
                 citacaoInput.value = complexidadeData[selectedIndex].citacao;
             }
@@ -593,9 +596,10 @@ Instrução e acompanhamento de Processos de Pagamentos; e,
 
         function onFamiliaChange() {
             const famSelect = document.getElementById('familiaSelect');
-            const selectedFamId = famSelect.value;
             const prodSelect = document.getElementById('produtoSelect');
-            
+            if (!famSelect || !prodSelect) return;
+
+            const selectedFamId = famSelect.value;
             prodSelect.innerHTML = '';
             const familiaObj = familiasData.find(f => f.id === selectedFamId);
             
@@ -619,6 +623,7 @@ Instrução e acompanhamento de Processos de Pagamentos; e,
         function handleProdutoChange() {
             const select = document.getElementById('produtoSelect');
             const customInput = document.getElementById('produtoCustom');
+            if (!select || !customInput) return;
             if (select.value === 'custom') {
                 customInput.classList.remove('hidden');
             } else {
@@ -629,6 +634,7 @@ Instrução e acompanhamento de Processos de Pagamentos; e,
         function handleEspecialistaChange() {
             const select = document.getElementById('especialistaSelect');
             const customInput = document.getElementById('especialistaCustom');
+            if (!select || !customInput) return;
             if (select.value === 'custom') {
                 customInput.classList.remove('hidden');
             } else {
@@ -639,6 +645,7 @@ Instrução e acompanhamento de Processos de Pagamentos; e,
         function handleUnidadeSuproChange() {
             const select = document.getElementById('unidadeSuproSelect');
             const customInput = document.getElementById('unidadeSuproCustom');
+            if (!select || !customInput) return;
             if (select.value === 'custom') {
                 customInput.classList.remove('hidden');
             } else {
@@ -649,26 +656,32 @@ Instrução e acompanhamento de Processos de Pagamentos; e,
         function handleSignatariosChange() {
             const gSelect = document.getElementById('gestorSelect');
             const gCustom = document.getElementById('gestorCustomContainer');
-            if (gSelect.value === 'custom') {
-                gCustom.classList.remove('hidden');
-            } else {
-                gCustom.classList.add('hidden');
+            if (gSelect && gCustom) {
+                if (gSelect.value === 'custom') {
+                    gCustom.classList.remove('hidden');
+                } else {
+                    gCustom.classList.add('hidden');
+                }
             }
 
             const fSelect = document.getElementById('fiscalSelect');
             const fCustom = document.getElementById('fiscalCustomContainer');
-            if (fSelect.value === 'custom') {
-                fCustom.classList.remove('hidden');
-            } else {
-                fCustom.classList.add('hidden');
+            if (fSelect && fCustom) {
+                if (fSelect.value === 'custom') {
+                    fCustom.classList.remove('hidden');
+                } else {
+                    fCustom.classList.add('hidden');
+                }
             }
 
             const cSelect = document.getElementById('contratadoSelect');
             const cCustom = document.getElementById('contratadoCustomContainer');
-            if (cSelect.value === 'custom') {
-                cCustom.classList.remove('hidden');
-            } else {
-                cCustom.classList.add('hidden');
+            if (cSelect && cCustom) {
+                if (cSelect.value === 'custom') {
+                    cCustom.classList.remove('hidden');
+                } else {
+                    cCustom.classList.add('hidden');
+                }
             }
         }
 
@@ -690,9 +703,12 @@ Instrução e acompanhamento de Processos de Pagamentos; e,
             handleUnidadeSuproChange();
             handleSignatariosChange();
         
-            const osNum = document.getElementById('osNum').value;
+            const osNumElem = document.getElementById('osNum');
+            if (!osNumElem) return;
+
+            const osNum = osNumElem.value;
             const familiaSelect = document.getElementById('familiaSelect');
-            const familiaText = familiaSelect.options[familiaSelect.selectedIndex].text;
+            const familiaText = familiaSelect ? familiaSelect.options[familiaSelect.selectedIndex].text : '';
             
             const osDisplayFormatted = `Ordem de Serviço - InfraSA O.S. nº ${osNum} - ${familiaText}`;
 
@@ -728,17 +744,19 @@ Instrução e acompanhamento de Processos de Pagamentos; e,
             const materialApoio = document.getElementById('materialApoio').value;
             
             const compSelect = document.getElementById('complexidadeSelect');
-            const complexidade = compSelect.options[compSelect.selectedIndex].text;
+            const complexidade = compSelect ? compSelect.options[compSelect.selectedIndex].text : '';
             const citacaoComplexidade = document.getElementById('citacaoComplexidade').value;
             
             const relevancia = document.getElementById('relevancia').value;
             
-            const ferrovia = document.querySelector('input[name="ferrovia"]:checked').value;
+            const ferroviaChecked = document.querySelector('input[name="ferrovia"]:checked');
+            const ferrovia = ferroviaChecked ? ferroviaChecked.value : 'geral';
             const ferroviaHtml = ferrovia === 'geral' 
                 ? '<strong>FERROVIA/LOTE: </strong>(X) Geral ( ) EF-232-Ferrovia Transnordestina.' 
                 : '<strong>FERROVIA/LOTE: </strong>( ) Geral (X) EF-232-Ferrovia Transnordestina.';
             
-            const multipla = document.querySelector('input[name="multipla"]:checked').value;
+            const multiplaChecked = document.querySelector('input[name="multipla"]:checked');
+            const multipla = multiplaChecked ? multiplaChecked.value : 'nao';
             const multiplaHtml = multipla === 'nao' 
                 ? '<strong>DEMANDA MULTIPLA?: </strong>( ) SIM (X) NÃO SEQUÊNCIA' 
                 : '<strong>DEMANDA MULTIPLA?: </strong>(X) SIM ( ) NÃO SEQUÊNCIA';
@@ -872,10 +890,12 @@ Instrução e acompanhamento de Processos de Pagamentos; e,
                 </p>
             `;
 
-            document.getElementById('seiDocumentPreview').innerHTML = htmlContent;
-            
-            bindHoverHighlight();
-            bindPreviewInteractions();
+            const previewContainer = document.getElementById('seiDocumentPreview');
+            if (previewContainer) {
+                previewContainer.innerHTML = htmlContent;
+                bindHoverHighlight();
+                bindPreviewInteractions();
+            }
         }
 
         function bindHoverHighlight() {
@@ -1034,6 +1054,7 @@ Instrução e acompanhamento de Processos de Pagamentos; e,
         window.onload = () => {
             initFamiliasSelect();
             initComplexidadeSelect();
+            updatePreview();
         };
     </script>
 </body>
