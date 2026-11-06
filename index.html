@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gerador de Ofício SEI - Infra S.A. v00</title>
+    <title>Gerador de Ofício SEI - Infra S.A. v0001</title>
     <!-- Tailwind CSS --> 
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons -->
@@ -305,16 +305,14 @@ Instrução e acompanhamento de Processos de Pagamentos; e,
 
                     <div>
                         <label class="block text-xs font-semibold text-slate-700 mb-1">Complexidade (Item 7)</label>
-                        <select id="complexidade" data-target="el-complexidade" onchange="updatePreview()" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none bg-white">
-                            <option value="Pouco complexo, conforme a disposição “f” do subitem 18.15.5.4 do TR, que estabelece:">Pouco complexo (Alínea f - subitem 18.15.5.4)</option>
-                            <option value="Médio complexo, conforme as diretrizes do Termo de Referência:">Médio complexo</option>
-                            <option value="Altamente complexo, conforme subitem especial do TR:">Altamente complexo</option>
+                        <select id="complexidadeSelect" data-target="el-complexidade" onchange="onComplexidadeChange()" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none bg-white">
+                            <!-- Alimentado dinamicamente pela 1ª coluna do arquivo de complexidade -->
                         </select>
                     </div>
 
                     <div>
                         <label class="block text-xs font-semibold text-slate-700 mb-1">Texto de Citação (Complexidade)</label>
-                        <input type="text" id="citacaoComplexidade" data-target="el-citacaocomplexidade" oninput="updatePreview()" value="f) Produtos relacionados às demandas envolvendo serviços técnicos de escritório com prazo de execução acima de 2 (duas) horas e de até 2 (dois) dias úteis." class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none">
+                        <textarea id="citacaoComplexidade" data-target="el-citacaocomplexidade" oninput="updatePreview()" rows="3" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none font-mono text-xs"></textarea>
                     </div>
 
                     <div>
@@ -532,6 +530,30 @@ Instrução e acompanhamento de Processos de Pagamentos; e,
             }
         ];
 
+        // Dados extraídos do arquivo de complexidade (Coluna 1 = Nível/Título, Coluna 2 = Texto da Citação)
+        const complexidadeData = [
+            {
+                nivel: "Extremamente complexo, conforme as diretrizes do Termo de Referência:",
+                citacao: "e) Produtos relacionados às demandas envolvendo serviços técnicos de escritório com prazo de execução acima de 10 (dez) dias úteis."
+            },
+            {
+                nivel: "Muito complexo, conforme as diretrizes do Termo de Referência:",
+                citacao: "e) Produtos relacionados às demandas envolvendo serviços técnicos de escritório com prazo de execução acima de 5 (cinco) dias úteis e de até 10 (dez) dias úteis."
+            },
+            {
+                nivel: "Complexo, conforme as diretrizes do Termo de Referência:",
+                citacao: "f) Produtos relacionados às demandas envolvendo serviços técnicos de escritório com prazo de execução acima de 2 (dois) dias úteis e de até 5 (cinco) dias úteis."
+            },
+            {
+                nivel: "Pouco complexo, conforme a disposição “f” do subitem 18.15.5.4 do TR, que estabelece:",
+                citacao: "f) Produtos relacionados às demandas envolvendo serviços técnicos de escritório com prazo de execução acima de 2 (duas) horas e de até 2 (dois) dias úteis."
+            },
+            {
+                nivel: "Sem complexidade, conforme as diretrizes do Termo de Referência:",
+                citacao: "c) Produtos relacionados às demandas envolvendo serviços técnicos de escritório com prazo de execução de até 2 (duas) horas."
+            }
+        ];
+
         function initFamiliasSelect() {
             const famSelect = document.getElementById('familiaSelect');
             famSelect.innerHTML = '';
@@ -543,6 +565,30 @@ Instrução e acompanhamento de Processos de Pagamentos; e,
             });
             famSelect.value = "Família 3"; 
             onFamiliaChange();
+        }
+
+        function initComplexidadeSelect() {
+            const compSelect = document.getElementById('complexidadeSelect');
+            compSelect.innerHTML = '';
+            complexidadeData.forEach((item, index) => {
+                const opt = document.createElement('option');
+                opt.value = index;
+                opt.textContent = item.nivel;
+                compSelect.appendChild(opt);
+            });
+            compSelect.value = 3; // Seleciona "Pouco complexo" por padrão (correspondente ao anterior)
+            onComplexidadeChange();
+        }
+
+        function onComplexidadeChange() {
+            const compSelect = document.getElementById('complexidadeSelect');
+            const selectedIndex = compSelect.value;
+            const citacaoInput = document.getElementById('citacaoComplexidade');
+            
+            if (complexidadeData[selectedIndex]) {
+                citacaoInput.value = complexidadeData[selectedIndex].citacao;
+            }
+            updatePreview();
         }
 
         function onFamiliaChange() {
@@ -660,13 +706,11 @@ Instrução e acompanhamento de Processos de Pagamentos; e,
             
             const descCodigoInput = document.getElementById('descCodigo').value;
             
-            // Pega o valor atual da Unidade Responsável para anexar ao final do identificador no documento da direita
             const unidadeSuproSelect = document.getElementById('unidadeSuproSelect');
             const unidadeSupro = unidadeSuproSelect.value === 'custom'
                 ? document.getElementById('unidadeSuproCustom').value
                 : unidadeSuproSelect.value;
 
-            // Combina o código base digitado com a unidade responsável selecionada/digitada
             const descCodigo = `${descCodigoInput} ${unidadeSupro}`;
 
             const demandaText = document.getElementById('demandaText').value;
@@ -683,8 +727,10 @@ Instrução e acompanhamento de Processos de Pagamentos; e,
             const apoioFiscal = document.getElementById('apoioFiscal').value;
             const materialApoio = document.getElementById('materialApoio').value;
             
-            const complexidade = document.getElementById('complexidade').value;
+            const compSelect = document.getElementById('complexidadeSelect');
+            const complexidade = compSelect.options[compSelect.selectedIndex].text;
             const citacaoComplexidade = document.getElementById('citacaoComplexidade').value;
+            
             const relevancia = document.getElementById('relevancia').value;
             
             const ferrovia = document.querySelector('input[name="ferrovia"]:checked').value;
@@ -964,8 +1010,10 @@ Instrução e acompanhamento de Processos de Pagamentos; e,
             document.getElementById('periodoExec').value = '03/11/2026 a 06/11/2026.';
             document.getElementById('apoioFiscal').value = 'Sérgio Nunes (fiscal técnico/ SUPRO) e Alessandra Espineli (fiscal técnico substituta/GEPRO).';
             document.getElementById('materialApoio').value = 'Não enviado.';
-            document.getElementById('complexidade').value = 'Pouco complexo, conforme a disposição “f” do subitem 18.15.5.4 do TR, que estabelece:';
-            document.getElementById('citacaoComplexidade').value = 'f) Produtos relacionados às demandas envolvendo serviços técnicos de escritório com prazo de execução acima de 2 (duas) horas e de até 2 (dois) dias úteis.';
+            
+            document.getElementById('complexidadeSelect').value = 3;
+            onComplexidadeChange();
+
             document.getElementById('relevancia').value = 'de média relevância, conforme a disposição "h" do subitem 18.11.5.8. do TR, que estabelece:';
             document.getElementById('unidadeSuproSelect').value = 'SUPRO';
             document.getElementById('unidadeSuproCustom').classList.add('hidden');
@@ -985,6 +1033,7 @@ Instrução e acompanhamento de Processos de Pagamentos; e,
 
         window.onload = () => {
             initFamiliasSelect();
+            initComplexidadeSelect();
         };
     </script>
 </body>
