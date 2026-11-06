@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gerador de Ofício SEI - Infra S.A. v0002</title>
+    <title>Gerador de Ofício SEI - Infra S.A. v0005</title>
     <!-- Tailwind CSS --> 
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons -->
@@ -315,6 +315,10 @@ Instrução e acompanhamento de Processos de Pagamentos; e,
                         <textarea id="citacaoComplexidade" data-target="el-citacaocomplexidade" oninput="updatePreview()" rows="3" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none font-mono text-xs"></textarea>
                     </div>
 
+
+
+
+
                     <div>
                         <label class="block text-xs font-semibold text-slate-700 mb-1">Relevância (Item 8)</label>
                         <select id="relevancia" data-target="el-relevancia" onchange="updatePreview()" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none bg-white">
@@ -533,15 +537,15 @@ Instrução e acompanhamento de Processos de Pagamentos; e,
         // Dados extraídos do arquivo de complexidade (Coluna 1 = Nível/Título, Coluna 2 = Texto da Citação)
         const complexidadeData = [
             {
-                nivel: "Extremamente complexo, conforme as diretrizes do Termo de Referência:",
+                nivel: "Extremamente complexo, conforme a disposição “e” do subitem 18.15.5.4 do TR, que estabelece:",
                 citacao: "e) Produtos relacionados às demandas envolvendo serviços técnicos de escritório com prazo de execução acima de 10 (dez) dias úteis."
             },
             {
-                nivel: "Muito complexo, conforme as diretrizes do Termo de Referência:",
+                nivel: "Muito complexo, conforme a disposição “e” do subitem 18.15.5.4 do TR, que estabelece:",
                 citacao: "e) Produtos relacionados às demandas envolvendo serviços técnicos de escritório com prazo de execução acima de 5 (cinco) dias úteis e de até 10 (dez) dias úteis."
             },
             {
-                nivel: "Complexo, conforme as diretrizes do Termo de Referência:",
+                nivel: "Complexo, conforme a disposição “f” do subitem 18.15.5.4 do TR, que estabelece:",
                 citacao: "f) Produtos relacionados às demandas envolvendo serviços técnicos de escritório com prazo de execução acima de 2 (dois) dias úteis e de até 5 (cinco) dias úteis."
             },
             {
@@ -549,52 +553,57 @@ Instrução e acompanhamento de Processos de Pagamentos; e,
                 citacao: "f) Produtos relacionados às demandas envolvendo serviços técnicos de escritório com prazo de execução acima de 2 (duas) horas e de até 2 (dois) dias úteis."
             },
             {
-                nivel: "Sem complexidade, conforme as diretrizes do Termo de Referência:",
+                nivel: "Sem complexidade, conforme a disposição “c” do subitem 18.15.5.4 do TR, que estabelece:",
                 citacao: "c) Produtos relacionados às demandas envolvendo serviços técnicos de escritório com prazo de execução de até 2 (duas) horas."
             }
         ];
 
-        function initFamiliasSelect() {
+        function initApp() {
             const famSelect = document.getElementById('familiaSelect');
-            if (!famSelect) return;
-            famSelect.innerHTML = '';
-            familiasData.forEach(f => {
-                const opt = document.createElement('option');
-                opt.value = f.id;
-                opt.textContent = f.nome;
-                famSelect.appendChild(opt);
-            });
-            famSelect.value = "Família 3"; 
-            onFamiliaChange();
-        }
+            if (famSelect) {
+                famSelect.innerHTML = '';
+                familiasData.forEach(f => {
+                    const opt = document.createElement('option');
+                    opt.value = f.id;
+                    opt.textContent = f.nome;
+                    famSelect.appendChild(opt);
+                });
+                famSelect.value = "Família 3"; 
+            }
 
-        function initComplexidadeSelect() {
             const compSelect = document.getElementById('complexidadeSelect');
-            if (!compSelect) return;
-            compSelect.innerHTML = '';
-            complexidadeData.forEach((item, index) => {
-                const opt = document.createElement('option');
-                opt.value = index;
-                opt.textContent = item.nivel;
-                compSelect.appendChild(opt);
-            });
-            compSelect.value = 3; // Seleciona "Pouco complexo" por padrão
-            onComplexidadeChange();
+            if (compSelect) {
+                compSelect.innerHTML = '';
+                complexidadeData.forEach((item, index) => {
+                    const opt = document.createElement('option');
+                    opt.value = index;
+                    opt.textContent = item.nivel;
+                    compSelect.appendChild(opt);
+                });
+                compSelect.value = 3; // Pouco complexo por padrão
+            }
+
+            onFamiliaChangeSilently();
+            onComplexidadeChangeSilently();
+            updatePreview();
         }
 
-        function onComplexidadeChange() {
+        function onComplexidadeChangeSilently() {
             const compSelect = document.getElementById('complexidadeSelect');
             const citacaoInput = document.getElementById('citacaoComplexidade');
             if (!compSelect || !citacaoInput) return;
-            
             const selectedIndex = compSelect.value;
             if (complexidadeData[selectedIndex]) {
                 citacaoInput.value = complexidadeData[selectedIndex].citacao;
             }
+        }
+
+        function onComplexidadeChange() {
+            onComplexidadeChangeSilently();
             updatePreview();
         }
 
-        function onFamiliaChange() {
+        function onFamiliaChangeSilently() {
             const famSelect = document.getElementById('familiaSelect');
             const prodSelect = document.getElementById('produtoSelect');
             if (!famSelect || !prodSelect) return;
@@ -616,7 +625,10 @@ Instrução e acompanhamento de Processos de Pagamentos; e,
             optCustom.value = 'custom';
             optCustom.textContent = '-- Digitar Outro Produto --';
             prodSelect.appendChild(optCustom);
+        }
 
+        function onFamiliaChange() {
+            onFamiliaChangeSilently();
             updatePreview();
         }
 
@@ -1051,11 +1063,10 @@ Instrução e acompanhamento de Processos de Pagamentos; e,
             updatePreview();
         }
 
-        window.onload = () => {
-            initFamiliasSelect();
-            initComplexidadeSelect();
-            updatePreview();
-        };
+        // Executa a inicialização assim que o DOM estiver carregado
+        document.addEventListener('DOMContentLoaded', () => {
+            initApp();
+        });
     </script>
 </body>
 </html>
