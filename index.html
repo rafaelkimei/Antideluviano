@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gerador de Ofício SEI - Infra S.A. v6</title>
+    <title>Gerador de Ofício SEI - Infra S.A. v8</title>
     <!-- Tailwind CSS --> 
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons -->
@@ -358,9 +358,18 @@ Instrução e acompanhamento de Processos de Pagamentos; e,
                     </div>
                 </div>
 
-                <!-- Section 4: Assinantes -->
+                <!-- Section 4: Orientações Gerais (Unidade / SUPRO) -->
                 <div class="space-y-4">
-                    <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider border-b pb-1">4. Assinaturas e Responsáveis</h3>
+                    <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider border-b pb-1">4. Orientações Gerais (Item 11)</h3>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Unidade Responsável (Item 11 - SUPRO)</label>
+                        <input type="text" id="unidadeSupro" data-target="el-unidadesupro" oninput="updatePreview()" value="SUPRO" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none">
+                    </div>
+                </div>
+
+                <!-- Section 5: Assinantes -->
+                <div class="space-y-4">
+                    <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider border-b pb-1">5. Assinaturas e Responsáveis</h3>
 
                     <div>
                         <label class="block text-xs font-semibold text-slate-700 mb-1">Gestor(a) do Contrato</label>
@@ -487,6 +496,8 @@ Instrução e acompanhamento de Processos de Pagamentos; e,
                 ? '<strong>DEMANDA MULTIPLA?: </strong>( ) SIM (X) NÃO SEQUÊNCIA' 
                 : '<strong>DEMANDA MULTIPLA?: </strong>(X) SIM ( ) NÃO SEQUÊNCIA';
 
+            const unidadeSupro = document.getElementById('unidadeSupro').value;
+
             const gestorNome = document.getElementById('gestorNome').value;
             const fiscalNome = document.getElementById('fiscalNome').value;
             const contratadoNome = document.getElementById('contratadoNome').value;
@@ -554,10 +565,10 @@ Instrução e acompanhamento de Processos de Pagamentos; e,
                 <p class="sei-paragraph-num-n1">10. ${multiplaHtml}</p>
 
                 <p class="sei-paragraph-num-n1">11. <strong>ORIENTAÇÕES GERAIS:</strong></p>
-                <p class="sei-paragraph-num-n2">11.1. Ao receber a demanda, deve-se verificar a documentação recebida. Caso seja identificada incompletude na documentação enviada, deve avisar prontamente ao Gestor/Fiscal competente na SUPRO.</p>
-                <p class="sei-paragraph-num-n2">11.2. Poderão ser consultados também, a critério do prestador de serviço, além da equipe de apoio fiscal, os profissionais lotados na SUPRO e suas gerências.</p>
-                <p class="sei-paragraph-num-n2">11.3. Qualquer dúvida em relação à demanda, o Gestor/Fiscal competente na SUPRO deve ser comunicado tempestivamente.</p>
-                <p class="sei-paragraph-num-n2">11.4. Qualquer dificuldade para atender a demanda no prazo estipulado, o Gestor/Fiscal competente na SUPRO deve ser comunicado em tempo hábil.</p>
+                <p class="sei-paragraph-num-n2" data-id="el-unidadesupro">11.1. Ao receber a demanda, deve-se verificar a documentação recebida. Caso seja identificada incompletude na documentação enviada, deve avisar prontamente ao Gestor/Fiscal competente na <span class="unidade-text">${unidadeSupro}</span>.</p>
+                <p class="sei-paragraph-num-n2" data-id="el-unidadesupro">11.2. Poderão ser consultados também, a critério do prestador de serviço, além da equipe de apoio fiscal, os profissionais lotados na <span class="unidade-text">${unidadeSupro}</span> e suas gerências.</p>
+                <p class="sei-paragraph-num-n2" data-id="el-unidadesupro">11.3. Qualquer dúvida em relação à demanda, o Gestor/Fiscal competente na <span class="unidade-text">${unidadeSupro}</span> deve ser comunicado tempestivamente.</p>
+                <p class="sei-paragraph-num-n2" data-id="el-unidadesupro">11.4. Qualquer dificuldade para atender a demanda no prazo estipulado, o Gestor/Fiscal competente na <span class="unidade-text">${unidadeSupro}</span> deve ser comunicado em tempo hábil.</p>
 
                 <p class="sei-justified-indent">&nbsp;</p>
                 <p class="sei-justified-indent">Atenciosamente,</p>
@@ -732,6 +743,7 @@ Instrução e acompanhamento de Processos de Pagamentos; e,
             document.getElementById('complexidade').value = 'Pouco complexo, conforme a disposição “f” do subitem 18.15.5.4 do TR, que estabelece:';
             document.getElementById('citacaoComplexidade').value = 'f) Produtos relacionados às demandas envolvendo serviços técnicos de escritório com prazo de execução acima de 2 (duas) horas e de até 2 (dois) dias úteis.';
             document.getElementById('relevancia').value = 'de média relevância, conforme a disposição "h" do subitem 18.11.5.8. do TR, que estabelece:';
+            document.getElementById('unidadeSupro').value = 'SUPRO';
             document.getElementById('gestorNome').value = 'LARISSA DE SOUZA CORRÊA';
             document.getElementById('fiscalNome').value = 'SÉRGIO NUNES DE FARIA';
             document.getElementById('contratadoNome').value = 'HENALDO ALESSANDRO LUCIEN DA SILVA';
