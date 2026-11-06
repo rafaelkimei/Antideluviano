@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gerador de Ofício SEI - Infra S.A. v11</title>
+    <title>Gerador de Ofício SEI - Infra S.A. v13</title>
     <!-- Tailwind CSS --> 
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons -->
@@ -192,13 +192,11 @@
                 <div class="space-y-4">
                     <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider border-b pb-1">1. Cabeçalho e Destinatário</h3>
                     
-                    <div class="grid grid-cols-1 gap-4">
-                        <div>
-                            <label class="block text-xs font-semibold text-slate-700 mb-1">Destinatário (Consórcio)</label>
-                            <input type="text" id="destinatario" data-target="el-destinatario" oninput="updatePreview()" 
-                                value="Consórcio CONSÓRCIO SSD-INFRA" 
-                                class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition">
-                        </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Destinatário (Consórcio)</label>
+                        <input type="text" id="destinatario" data-target="el-destinatario" oninput="updatePreview()" 
+                            value="Consórcio CONSÓRCIO SSD-INFRA" 
+                            class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition">
                     </div>
                 </div>
 
@@ -206,19 +204,18 @@
                 <div class="space-y-4">
                     <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider border-b pb-1">2. Dados da O.S. e Produto (Itens 2 a 4)</h3>
 
-                    <div class="grid grid-cols-2 gap-3">
-                        <div>
-                            <label class="block text-xs font-semibold text-slate-700 mb-1">Número da O.S. / Família</label>
-                            <input type="text" id="osNum" data-target="el-os" oninput="updatePreview()" 
-                                value="Ordem de Serviço - InfraSA O.S. nº 55- Família 3 (Consultoria Técnica)" 
-                                class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-semibold text-slate-700 mb-1">Nº SEI da O.S.</label>
-                            <input type="text" id="seiOS" data-target="el-seios" oninput="updatePreview()" 
-                                value="11856808" 
-                                class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition">
-                        </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Número da O.S. / Família</label>
+                        <input type="text" id="osNum" data-target="el-os" oninput="updatePreview()" 
+                            value="Ordem de Serviço - InfraSA O.S. nº 55- Família 3 (Consultoria Técnica)" 
+                            class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Nº SEI da O.S.</label>
+                        <input type="text" id="seiOS" data-target="el-seios" oninput="updatePreview()" 
+                            value="11856808" 
+                            class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition">
                     </div>
 
                     <div>
@@ -239,13 +236,13 @@
 
                     <div>
                         <label class="block text-xs font-semibold text-slate-700 mb-1">Descrição Textual da Demanda (Item 4.1)</label>
-                        <textarea id="demandaText" data-target="el-demandatext" oninput="updatePreview()" rows="10" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none transition">O trabalho consiste em prestar consultoria jurídica rotineira às atividades da SUPRO, bem como às gerências GEPRO e GCUST, com ênfase na análise, elaboração e revisão de documentos em geral. Entre as principais atividades, destacam-se as consultorias nos seguintes assuntos:</textarea>
+                        <textarea id="demandaText" data-target="el-demandatext" oninput="updatePreview()" rows="3" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none transition">O trabalho consiste em prestar consultoria jurídica rotineira às atividades da SUPRO, bem como às gerências GEPRO e GCUST, com ênfase na análise, elaboração e revisão de documentos em geral. Entre as principais atividades, destacam-se as consultorias nos seguintes assuntos:</textarea>
                     </div>
 
                     <!-- Incisos Romanos -->
                     <div class="bg-slate-50 p-3 rounded-lg border border-slate-200 space-y-2">
                         <span class="text-xs font-semibold text-slate-600 block mb-1"><i class="fa-solid fa-list-check"></i> Atividades Principais (Incisos I, II, III... - Item 4.1)</span>
-                        <textarea id="incisosText" data-target="el-incisos" oninput="updatePreview()" rows="10" class="w-full p-2 text-xs border border-slate-300 rounded font-mono">Gestão dos Contratos, Termos de Credenciamento, Termos de Colaboração e Termos de Execução Descentralizada;
+                        <textarea id="incisosText" data-target="el-incisos" oninput="updatePreview()" rows="6" class="w-full p-2 text-xs border border-slate-300 rounded font-mono">Gestão dos Contratos, Termos de Credenciamento, Termos de Colaboração e Termos de Execução Descentralizada;
 Processos Administrativos gerais das Unidades da SUPRO;
 Processos Administrativos Sancionatórios;
 Processos de Constituição de Débitos;
@@ -256,42 +253,40 @@ Processos de Reconhecimento de Dívidas.</textarea>
                     <!-- Alíneas Letras -->
                     <div class="bg-slate-50 p-3 rounded-lg border border-slate-200 space-y-2">
                         <span class="text-xs font-semibold text-slate-600 block mb-1"><i class="fa-solid fa-list"></i> Expedientes Complementares (Alíneas a, b, c... - Item 4.2)</span>
-                        <textarea id="alineasText" data-target="el-alineas" oninput="updatePreview()" rows="10" class="w-full p-2 text-xs border border-slate-300 rounded font-mono">Ordens de Serviço e respectivas Notas de Alteração;
+                        <textarea id="alineasText" data-target="el-alineas" oninput="updatePreview()" rows="4" class="w-full p-2 text-xs border border-slate-300 rounded font-mono">Ordens de Serviço e respectivas Notas de Alteração;
 Padronização de documentos;
 Instrução e acompanhamento de Processos de Pagamentos; e,
 Órgãos de Controle e Auditoria.</textarea>
                     </div>
 
-                    <div class="grid grid-cols-2 gap-3">
-                        <div>
-                            <label class="block text-xs font-semibold text-slate-700 mb-1">Disciplinas / Especialista (Item 4.4)</label>
-                            <select id="especialistaSelect" data-target="el-especialista" onchange="updatePreview()" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none bg-white">
-                                <option value="Consultoria Jurídica (Jailson Mateus Cardoso).">Consultoria Jurídica - Jailson Mateus Cardoso</option>
-                                <option value="Engenharia Civil e Infraestrutura;">Orçamento e custos - Caio Henrique</option>
-                                <option value="Custos e Orçamentação;">Custos e Orçamentação</option>
-                                <option value="custom">-- Digitar Outro Especialista --</option>
-                            </select>
-                            <input type="text" id="especialistaCustom" data-target="el-especialista" oninput="updatePreview()" placeholder="Digite o especialista customizado" class="hidden mt-2 w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-semibold text-slate-700 mb-1">Prazo para Atendimento (Item 4.5)</label>
-                            <input type="text" id="prazoRelatorio" data-target="el-prazo" oninput="updatePreview()" value="30/11/2026." class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none">
-                        </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Disciplinas / Especialista (Item 4.4)</label>
+                        <select id="especialistaSelect" data-target="el-especialista" onchange="updatePreview()" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none bg-white">
+                            <option value="Consultoria Jurídica (Jailson Mateus Cardoso).">Consultoria Jurídica - Jailson Mateus Cardoso</option>
+                            <option value="Engenharia Civil e Infraestrutura;">Orçamento e custos - Caio Henrique</option>
+                            <option value="Custos e Orçamentação;">Custos e Orçamentação</option>
+                            <option value="custom">-- Digitar Outro Especialista --</option>
+                        </select>
+                        <input type="text" id="especialistaCustom" data-target="el-especialista" oninput="updatePreview()" placeholder="Digite o especialista customizado" class="hidden mt-2 w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none">
                     </div>
 
-                    <div class="grid grid-cols-2 gap-3">
-                        <div>
-                            <label class="block text-xs font-semibold text-slate-700 mb-1">Período de Execução (Item 4.6)</label>
-                            <input type="text" id="periodoExec" data-target="el-periodo" oninput="updatePreview()" value="03/11/2026 a 06/11/2026." class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-semibold text-slate-700 mb-1">Material de Apoio (Item 6)</label>
-                            <select id="materialApoio" data-target="el-material" onchange="updatePreview()" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none bg-white">
-                                <option value="Não enviado.">Não enviado.</option>
-                                <option value="Enviado em anexo.">Enviado em anexo.</option>
-                                <option value="Disponibilizado no drive.">Disponibilizado no drive.</option>
-                            </select>
-                        </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Prazo para Atendimento (Item 4.5)</label>
+                        <input type="text" id="prazoRelatorio" data-target="el-prazo" oninput="updatePreview()" value="30/11/2026." class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Período de Execução (Item 4.6)</label>
+                        <input type="text" id="periodoExec" data-target="el-periodo" oninput="updatePreview()" value="03/11/2026 a 06/11/2026." class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Material de Apoio (Item 6)</label>
+                        <select id="materialApoio" data-target="el-material" onchange="updatePreview()" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none bg-white">
+                            <option value="Não enviado.">Não enviado.</option>
+                            <option value="Enviado em anexo.">Enviado em anexo.</option>
+                            <option value="Disponibilizado no drive.">Disponibilizado no drive.</option>
+                        </select>
                     </div>
 
                     <div>
@@ -327,33 +322,31 @@ Instrução e acompanhamento de Processos de Pagamentos; e,
                         </select>
                     </div>
 
-                    <div class="grid grid-cols-2 gap-3 pt-2">
-                        <div>
-                            <label class="block text-xs font-semibold text-slate-700 mb-1">Ferrovia / Lote (Item 9)</label>
-                            <div class="space-y-1 mt-1">
-                                <label class="flex items-center text-xs text-slate-700 gap-2 cursor-pointer">
-                                    <input type="radio" name="ferrovia" value="geral" checked onchange="updatePreview()" class="text-brand-600 focus:ring-brand-500">
-                                    ( X ) Geral
-                                </label>
-                                <label class="flex items-center text-xs text-slate-700 gap-2 cursor-pointer">
-                                    <input type="radio" name="ferrovia" value="ef232" onchange="updatePreview()" class="text-brand-600 focus:ring-brand-500">
-                                    ( X ) EF-232 – Ferrovia Transnordestina
-                                </label>
-                            </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Ferrovia / Lote (Item 9)</label>
+                        <div class="space-y-1 mt-1">
+                            <label class="flex items-center text-xs text-slate-700 gap-2 cursor-pointer">
+                                <input type="radio" name="ferrovia" value="geral" checked onchange="updatePreview()" class="text-brand-600 focus:ring-brand-500">
+                                ( X ) Geral
+                            </label>
+                            <label class="flex items-center text-xs text-slate-700 gap-2 cursor-pointer">
+                                <input type="radio" name="ferrovia" value="ef232" onchange="updatePreview()" class="text-brand-600 focus:ring-brand-500">
+                                ( X ) EF-232 – Ferrovia Transnordestina
+                            </label>
                         </div>
+                    </div>
 
-                        <div>
-                            <label class="block text-xs font-semibold text-slate-700 mb-1">Demanda Múltipla? (Item 10)</label>
-                            <div class="space-y-1 mt-1">
-                                <label class="flex items-center text-xs text-slate-700 gap-2 cursor-pointer">
-                                    <input type="radio" name="multipla" value="nao" checked onchange="updatePreview()" class="text-brand-600 focus:ring-brand-500">
-                                    ( ) SIM ( X ) NÃO SEQUÊNCIA
-                                </label>
-                                <label class="flex items-center text-xs text-slate-700 gap-2 cursor-pointer">
-                                    <input type="radio" name="multipla" value="sim" onchange="updatePreview()" class="text-brand-600 focus:ring-brand-500">
-                                    ( X ) SIM ( ) NÃO SEQUÊNCIA
-                                </label>
-                            </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Demanda Múltipla? (Item 10)</label>
+                        <div class="space-y-1 mt-1">
+                            <label class="flex items-center text-xs text-slate-700 gap-2 cursor-pointer">
+                                <input type="radio" name="multipla" value="nao" checked onchange="updatePreview()" class="text-brand-600 focus:ring-brand-500">
+                                ( ) SIM ( X ) NÃO SEQUÊNCIA
+                            </label>
+                            <label class="flex items-center text-xs text-slate-700 gap-2 cursor-pointer">
+                                <input type="radio" name="multipla" value="sim" onchange="updatePreview()" class="text-brand-600 focus:ring-brand-500">
+                                ( X ) SIM ( ) NÃO SEQUÊNCIA
+                            </label>
                         </div>
                     </div>
                 </div>
