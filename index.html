@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gerador de Ofício SEI - Infra S.A. v4</title>
+    <title>Gerador de Ofício SEI - Infra S.A. v5</title>
     <!-- Tailwind CSS --> 
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons -->
@@ -193,8 +193,6 @@
                     <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider border-b pb-1">1. Cabeçalho e Destinatário</h3>
                     
                     <div class="grid grid-cols-1 gap-4">
-
-
                         <div>
                             <label class="block text-xs font-semibold text-slate-700 mb-1">Destinatário (Consórcio)</label>
                             <input type="text" id="destinatario" data-target="el-destinatario" oninput="updatePreview()" 
@@ -267,7 +265,13 @@ Instrução e acompanhamento de Processos de Pagamentos; e,
                     <div class="grid grid-cols-2 gap-3">
                         <div>
                             <label class="block text-xs font-semibold text-slate-700 mb-1">Disciplinas / Especialista (Item 4.4)</label>
-                            <input type="text" id="especialista" data-target="el-especialista" oninput="updatePreview()" value="Consultoria Jurídica (Jailson Mateus Cardoso)." class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none">
+                            <select id="especialistaSelect" data-target="el-especialista" onchange="updatePreview()" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none bg-white">
+                                <option value="Consultoria Jurídica (Jailson Mateus Cardoso).">Consultoria Jurídica (Jailson Mateus Cardoso)</option>
+                                <option value="Engenharia Civil e Infraestrutura;">Engenharia Civil e Infraestrutura</option>
+                                <option value="Custos e Orçamentação;">Custos e Orçamentação</option>
+                                <option value="custom">-- Digitar Outro Especialista --</option>
+                            </select>
+                            <input type="text" id="especialistaCustom" data-target="el-especialista" oninput="updatePreview()" placeholder="Digite o especialista customizado" class="hidden mt-2 w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none">
                         </div>
                         <div>
                             <label class="block text-xs font-semibold text-slate-700 mb-1">Prazo para Atendimento (Item 4.5)</label>
@@ -419,6 +423,16 @@ Instrução e acompanhamento de Processos de Pagamentos; e,
             }
         }
 
+        function handleEspecialistaChange() {
+            const select = document.getElementById('especialistaSelect');
+            const customInput = document.getElementById('especialistaCustom');
+            if (select.value === 'custom') {
+                customInput.classList.remove('hidden');
+            } else {
+                customInput.classList.add('hidden');
+            }
+        }
+
         function toRoman(num) {
             const lookup = { M: 1000, CM: 900, D: 500, CD: 400, C: 100, XC: 90, L: 50, XL: 40, X: 10, IX: 9, V: 5, IV: 4, I: 1 };
             let roman = '';
@@ -433,7 +447,7 @@ Instrução e acompanhamento de Processos de Pagamentos; e,
 
         function updatePreview() {
             handleProdutoChange();
-
+            handleEspecialistaChange();
         
             const osNum = document.getElementById('osNum').value;
             const seiOS = document.getElementById('seiOS').value;
@@ -449,7 +463,11 @@ Instrução e acompanhamento de Processos de Pagamentos; e,
             const incisosRaw = document.getElementById('incisosText').value;
             const alineasRaw = document.getElementById('alineasText').value;
             
-            const especialista = document.getElementById('especialista').value;
+            const especialistaSelect = document.getElementById('especialistaSelect');
+            const especialista = especialistaSelect.value === 'custom'
+                ? document.getElementById('especialistaCustom').value
+                : especialistaSelect.value;
+
             const prazoRelatorio = document.getElementById('prazoRelatorio').value;
             const periodoExec = document.getElementById('periodoExec').value;
             const apoioFiscal = document.getElementById('apoioFiscal').value;
@@ -489,8 +507,6 @@ Instrução e acompanhamento de Processos de Pagamentos; e,
             });
 
             const htmlContent = `
-
-
                 <p class="sei-align-left-simple">&nbsp;</p>
                 
                 <p class="sei-align-left-simple">Ao<br><strong data-id="el-destinatario">${destinatario}</strong></p>
@@ -706,7 +722,9 @@ Instrução e acompanhamento de Processos de Pagamentos; e,
             document.getElementById('demandaText').value = 'O trabalho consiste em prestar consultoria jurídica rotineira às atividades da SUPRO, bem como às gerências GEPRO e GCUST, com ênfase na análise, elaboração e revisão de documentos em geral. Entre as principais atividades, destacam-se as consultorias nos seguintes assuntos:';
             document.getElementById('incisosText').value = `Gestão dos Contratos, Termos de Credenciamento, Termos de Colaboração e Termos de Execução Descentralizada;\nProcessos Administrativos gerais das Unidades da SUPRO;\nProcessos Administrativos Sancionatórios;\nProcessos de Constituição de Débitos;\nProcessos de Rescisão Contratual; e,\nProcessos de Reconhecimento de Dívidas.`;
             document.getElementById('alineasText').value = `Ordens de Serviço e respectivas Notas de Alteração;\nPadronização de documentos;\nInstrução e acompanhamento de Processos de Pagamentos; e,\nÓrgãos de Controle e Auditoria.`;
-            document.getElementById('especialista').value = 'Consultoria Jurídica (Jailson Mateus Cardoso).';
+            document.getElementById('especialistaSelect').value = 'Consultoria Jurídica (Jailson Mateus Cardoso).';
+            document.getElementById('especialistaCustom').classList.add('hidden');
+            document.getElementById('especialistaCustom').value = '';
             document.getElementById('prazoRelatorio').value = '30/11/2026.';
             document.getElementById('periodoExec').value = '03/11/2026 a 06/11/2026.';
             document.getElementById('apoioFiscal').value = 'Sérgio Nunes (fiscal técnico/ SUPRO) e Alessandra Espineli (fiscal técnico substituta/GEPRO).';
