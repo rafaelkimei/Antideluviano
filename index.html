@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gerador de Ofício SEI - Infra S.A. v0008</title>
+    <title>Gerador de Ofício SEI - Infra S.A. v0010</title>
     <!-- Tailwind CSS --> 
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons -->
@@ -267,7 +267,7 @@ Instrução e acompanhamento de Processos de Pagamentos; e,
                         <label class="block text-xs font-semibold text-slate-700 mb-1">Disciplinas / Especialista (Item 4.4)</label>
                         <select id="especialistaSelect" data-target="el-especialista" onchange="updatePreview()" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none bg-white">
                             <option value="Consultoria Jurídica (Jailson Mateus Cardoso).">Consultoria Jurídica - Jailson Mateus Cardoso</option>
-                            <option value="Engenharia Civil e Infraestrutura;">Orçamento e custos - Caio Henrique</option>
+                            <option value="Orçamento e custos - Caio Henrique">Orçamento e custos - Caio Henrique</option>
                             <option value="Custos e Orçamentação;">Custos e Orçamentação</option>
                             <option value="custom">-- Digitar Outro Especialista --</option>
                         </select>
@@ -295,7 +295,13 @@ Instrução e acompanhamento de Processos de Pagamentos; e,
 
                     <div>
                         <label class="block text-xs font-semibold text-slate-700 mb-1">Apoio Fiscal (Item 5)</label>
-                        <input type="text" id="apoioFiscal" data-target="el-apoio" oninput="updatePreview()" value="Sérgio Nunes (fiscal técnico/ SUPRO) e Alessandra Espineli (fiscal técnico substituta/GEPRO)." class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none">
+                        <select id="apoioFiscalSelect" data-target="el-apoio" onchange="updatePreview()" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none bg-white">
+                            <option value="Sérgio Nunes (fiscal técnico/ SUPRO) e Alessandra Espineli (fiscal técnico substituta/GEPRO).">Sérgio Nunes (SUPRO) e Alessandra Espineli (GEPRO)</option>
+                            <option value="Wagner Caldeira do Valle Moraes e Lorena Cristina Martins Batista Duarte.">Wagner Caldeira e Lorena Cristina</option>
+                            <option value="Marcelo Vinaud Prado e Fábio Fernal.">Marcelo Vinaud e Fábio Fernal</option>
+                            <option value="custom">-- Digitar Outro Apoio Fiscal --</option>
+                        </select>
+                        <input type="text" id="apoioFiscalCustom" data-target="el-apoio" oninput="updatePreview()" placeholder="Digite o apoio fiscal customizado" class="hidden mt-2 w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none">
                     </div>
                 </div>
 
@@ -378,9 +384,23 @@ Instrução e acompanhamento de Processos de Pagamentos; e,
                     <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider border-b pb-1">5. Assinaturas e Responsáveis</h3>
 
                     <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Assinatura Adicional (Opcional - Abaixo de Atenciosamente)</label>
+                        <select id="assinaturaAdicionalSelect" data-target="el-adicional" onchange="updatePreview()" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none bg-white">
+                            <option value="">-- Nenhuma (Sem Assinatura Adicional) --</option>
+                            <option value="EDSON RODOLFO PEREIRA|Gerente de Custos - substituto<br>Fiscal Setorial Substituto do Produto: 3.1. Consultoria Técnica SUPRO - Orçamento e Custos|Portaria nº 74 (SEI nº 11032342)">Edson Rodolfo Pereira (Gerente de Custos - substituto)</option>
+                            <option value="custom">-- Digitar Outra Assinatura Adicional --</option>
+                        </select>
+                        <div id="assinaturaAdicionalCustomContainer" class="hidden mt-2 space-y-2">
+                            <input type="text" id="adicionalNome" oninput="updatePreview()" placeholder="Nome" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none">
+                            <input type="text" id="adicionalCargo" oninput="updatePreview()" placeholder="Cargo / Função" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none">
+                            <input type="text" id="adicionalPortaria" oninput="updatePreview()" placeholder="Portaria / SEI nº" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none">
+                        </div>
+                    </div>
+
+                    <div>
                         <label class="block text-xs font-semibold text-slate-700 mb-1">Gestor(a) do Contrato</label>
                         <select id="gestorSelect" data-target="el-gestor" onchange="updatePreview()" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none bg-white">
-                            <option value="LARISSA DE SOUZA CORRÊA|Gestora do Contrato 29/24|Portaria nº 74 (SEI nº 11032342)">Larissa de Souza CorrÊa (Gestora Contrato 29/24)</option>
+                            <option value="LARISSA DE SOUZA CORRÊA|Gestora do Contrato 29/24|Portaria nº 74 (SEI nº 11032342)">Larissa de Souza Corrêa (Gestora Contrato 29/24)</option>
                             <option value="custom">-- Digitar Outro Gestor(a) --</option>
                         </select>
                         <div id="gestorCustomContainer" class="hidden mt-2 space-y-2">
@@ -683,6 +703,17 @@ Instrução e acompanhamento de Processos de Pagamentos; e,
             }
         }
 
+        function handleApoioFiscalChange() {
+            const select = document.getElementById('apoioFiscalSelect');
+            const customInput = document.getElementById('apoioFiscalCustom');
+            if (!select || !customInput) return;
+            if (select.value === 'custom') {
+                customInput.classList.remove('hidden');
+            } else {
+                customInput.classList.add('hidden');
+            }
+        }
+
         function handleEspecialistaChange() {
             const select = document.getElementById('especialistaSelect');
             const customInput = document.getElementById('especialistaCustom');
@@ -706,6 +737,16 @@ Instrução e acompanhamento de Processos de Pagamentos; e,
         }
 
         function handleSignatariosChange() {
+            const aSelect = document.getElementById('assinaturaAdicionalSelect');
+            const aCustom = document.getElementById('assinaturaAdicionalCustomContainer');
+            if (aSelect && aCustom) {
+                if (aSelect.value === 'custom') {
+                    aCustom.classList.remove('hidden');
+                } else {
+                    aCustom.classList.add('hidden');
+                }
+            }
+
             const gSelect = document.getElementById('gestorSelect');
             const gCustom = document.getElementById('gestorCustomContainer');
             if (gSelect && gCustom) {
@@ -751,6 +792,7 @@ Instrução e acompanhamento de Processos de Pagamentos; e,
 
         function updatePreview() {
             handleProdutoChange();
+            handleApoioFiscalChange();
             handleEspecialistaChange();
             handleUnidadeSuproChange();
             handleSignatariosChange();
@@ -792,7 +834,12 @@ Instrução e acompanhamento de Processos de Pagamentos; e,
 
             const prazoRelatorio = document.getElementById('prazoRelatorio').value;
             const periodoExec = document.getElementById('periodoExec').value;
-            const apoioFiscal = document.getElementById('apoioFiscal').value;
+            
+            const apoioFiscalSelect = document.getElementById('apoioFiscalSelect');
+            const apoioFiscal = apoioFiscalSelect.value === 'custom'
+                ? document.getElementById('apoioFiscalCustom').value
+                : apoioFiscalSelect.value;
+
             const materialApoio = document.getElementById('materialApoio').value;
             
             const compSelect = document.getElementById('complexidadeSelect');
@@ -817,6 +864,20 @@ Instrução e acompanhamento de Processos de Pagamentos; e,
             const multiplaHtml = multipla === 'nao' 
                 ? '<strong>DEMANDA MULTIPLA?: </strong>( ) SIM (X) NÃO SEQUÊNCIA' 
                 : '<strong>DEMANDA MULTIPLA?: </strong>(X) SIM ( ) NÃO SEQUÊNCIA';
+
+            const aSelect = document.getElementById('assinaturaAdicionalSelect');
+            let adicionalHtml = '';
+            if (aSelect.value === 'custom') {
+                const aNome = document.getElementById('adicionalNome').value;
+                const aCargo = document.getElementById('adicionalCargo').value;
+                const aPortaria = document.getElementById('adicionalPortaria').value;
+                if (aNome.trim() !== '') {
+                    adicionalHtml = `<p class="sei-centered" data-id="el-adicional"><em>(assinado eletronicamente)</em><br><strong>${aNome}</strong><br>${aCargo}<br>${aPortaria}</p><p class="sei-justified-indent">&nbsp;</p>`;
+                }
+            } else if (aSelect.value !== '') {
+                const parts = aSelect.value.split('|');
+                adicionalHtml = `<p class="sei-centered" data-id="el-adicional"><em>(assinado eletronicamente)</em><br><strong>${parts[0]}</strong><br>${parts[1]}<br>${parts[2]}</p><p class="sei-justified-indent">&nbsp;</p>`;
+            }
 
             const gSelect = document.getElementById('gestorSelect');
             let gestorHtml = '';
@@ -925,6 +986,8 @@ Instrução e acompanhamento de Processos de Pagamentos; e,
                 <p class="sei-justified-indent">&nbsp;</p>
                 <p class="sei-justified-indent">Atenciosamente,</p>
                 <p class="sei-justified-indent">&nbsp;</p>
+
+                ${adicionalHtml}
 
                 <p class="sei-centered" data-id="el-gestor">
                     ${gestorHtml}
@@ -1085,7 +1148,9 @@ Instrução e acompanhamento de Processos de Pagamentos; e,
             document.getElementById('especialistaCustom').value = '';
             document.getElementById('prazoRelatorio').value = '30/11/2026.';
             document.getElementById('periodoExec').value = '03/11/2026 a 06/11/2026.';
-            document.getElementById('apoioFiscal').value = 'Sérgio Nunes (fiscal técnico/ SUPRO) e Alessandra Espineli (fiscal técnico substituta/GEPRO).';
+            document.getElementById('apoioFiscalSelect').value = 'Sérgio Nunes (fiscal técnico/ SUPRO) e Alessandra Espineli (fiscal técnico substituta/GEPRO).';
+            document.getElementById('apoioFiscalCustom').classList.add('hidden');
+            document.getElementById('apoioFiscalCustom').value = '';
             document.getElementById('materialApoio').value = 'Não enviado.';
             
             document.getElementById('complexidadeSelect').value = 3;
@@ -1095,6 +1160,12 @@ Instrução e acompanhamento de Processos de Pagamentos; e,
             document.getElementById('unidadeSuproCustom').classList.add('hidden');
             document.getElementById('unidadeSuproCustom').value = '';
             
+            document.getElementById('assinaturaAdicionalSelect').value = '';
+            document.getElementById('assinaturaAdicionalCustomContainer').classList.add('hidden');
+            document.getElementById('adicionalNome').value = '';
+            document.getElementById('adicionalCargo').value = '';
+            document.getElementById('adicionalPortaria').value = '';
+
             document.getElementById('gestorSelect').value = 'LARISSA DE SOUZA CORRÊA|Gestora do Contrato 29/24|Portaria nº 74 (SEI nº 11032342)';
             document.getElementById('gestorCustomContainer').classList.add('hidden');
             
