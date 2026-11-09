@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gerador de Ofício SEI - Infra S.A. v0005</title>
+    <title>Gerador de Ofício SEI - Infra S.A. v0001</title>
     <!-- Tailwind CSS --> 
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons -->
@@ -311,20 +311,9 @@ Instrução e acompanhamento de Processos de Pagamentos; e,
                     </div>
 
                     <div>
-                        <label class="block text-xs font-semibold text-slate-700 mb-1">Texto de Citação (Complexidade)</label>
-                        <textarea id="citacaoComplexidade" data-target="el-citacaocomplexidade" oninput="updatePreview()" rows="3" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none font-mono text-xs"></textarea>
-                    </div>
-
-
-
-
-
-                    <div>
                         <label class="block text-xs font-semibold text-slate-700 mb-1">Relevância (Item 8)</label>
-                        <select id="relevancia" data-target="el-relevancia" onchange="updatePreview()" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none bg-white">
-                            <option value="de média relevância, conforme a disposição &quot;h&quot; do subitem 18.11.5.8. do TR, que estabelece:">Média Relevância (Alínea h - subitem 18.11.5.8)</option>
-                            <option value="de alta relevância, por se tratar de atividade prioritária da Superintendência:">Alta Relevância</option>
-                            <option value="de baixa relevância, conforme escala padronizada:">Baixa Relevância</option>
+                        <select id="relevanciaSelect" data-target="el-relevancia" onchange="onRelevanciaChange()" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none bg-white">
+                            <!-- Alimentado dinamicamente pelo segundo arquivo -->
                         </select>
                     </div>
 
@@ -333,11 +322,23 @@ Instrução e acompanhamento de Processos de Pagamentos; e,
                         <div class="space-y-1 mt-1">
                             <label class="flex items-center text-xs text-slate-700 gap-2 cursor-pointer">
                                 <input type="radio" name="ferrovia" value="geral" checked onchange="updatePreview()" class="text-brand-600 focus:ring-brand-500">
-                                ( X ) Geral
+                                Geral
                             </label>
                             <label class="flex items-center text-xs text-slate-700 gap-2 cursor-pointer">
                                 <input type="radio" name="ferrovia" value="ef232" onchange="updatePreview()" class="text-brand-600 focus:ring-brand-500">
-                                ( X ) EF-232 – Ferrovia Transnordestina
+                                EF-232 – Ferrovia Transnordestina
+                            </label>
+                            <label class="flex items-center text-xs text-slate-700 gap-2 cursor-pointer">
+                                <input type="radio" name="ferrovia" value="ef151" onchange="updatePreview()" class="text-brand-600 focus:ring-brand-500">
+                                EF-151 – Ferrovia Norte Sul
+                            </label>
+                            <label class="flex items-center text-xs text-slate-700 gap-2 cursor-pointer">
+                                <input type="radio" name="ferrovia" value="ef334" onchange="updatePreview()" class="text-brand-600 focus:ring-brand-500">
+                                EF-334 – Ferrovia de Integração Oeste-Leste
+                            </label>
+                            <label class="flex items-center text-xs text-slate-700 gap-2 cursor-pointer">
+                                <input type="radio" name="ferrovia" value="ef354" onchange="updatePreview()" class="text-brand-600 focus:ring-brand-500">
+                                EF-354 – Ferrovia de Integração Centro-Oeste
                             </label>
                         </div>
                     </div>
@@ -537,15 +538,15 @@ Instrução e acompanhamento de Processos de Pagamentos; e,
         // Dados extraídos do arquivo de complexidade (Coluna 1 = Nível/Título, Coluna 2 = Texto da Citação)
         const complexidadeData = [
             {
-                nivel: "Extremamente complexo, conforme a disposição “e” do subitem 18.15.5.4 do TR, que estabelece:",
+                nivel: "Extremamente complexo, conforme a disposição “e” do subitem 18.15.5.1 do TR, que estabelece:",
                 citacao: "e) Produtos relacionados às demandas envolvendo serviços técnicos de escritório com prazo de execução acima de 10 (dez) dias úteis."
             },
             {
-                nivel: "Muito complexo, conforme a disposição “e” do subitem 18.15.5.4 do TR, que estabelece:",
+                nivel: "Muito complexo, conforme a disposição “e” do subitem 18.15.5.2 do TR, que estabelece:",
                 citacao: "e) Produtos relacionados às demandas envolvendo serviços técnicos de escritório com prazo de execução acima de 5 (cinco) dias úteis e de até 10 (dez) dias úteis."
             },
             {
-                nivel: "Complexo, conforme a disposição “f” do subitem 18.15.5.4 do TR, que estabelece:",
+                nivel: "Complexo, conforme a disposição “f” do subitem 18.15.5.3 do TR, que estabelece:",
                 citacao: "f) Produtos relacionados às demandas envolvendo serviços técnicos de escritório com prazo de execução acima de 2 (dois) dias úteis e de até 5 (cinco) dias úteis."
             },
             {
@@ -553,8 +554,32 @@ Instrução e acompanhamento de Processos de Pagamentos; e,
                 citacao: "f) Produtos relacionados às demandas envolvendo serviços técnicos de escritório com prazo de execução acima de 2 (duas) horas e de até 2 (dois) dias úteis."
             },
             {
-                nivel: "Sem complexidade, conforme a disposição “c” do subitem 18.15.5.4 do TR, que estabelece:",
+                nivel: "Sem complexidade, conforme a disposição “c” do subitem 18.15.5.5 do TR, que estabelece:",
                 citacao: "c) Produtos relacionados às demandas envolvendo serviços técnicos de escritório com prazo de execução de até 2 (duas) horas."
+            }
+        ];
+
+        // Dados de relevância alimentados inteiramente pelo segundo arquivo
+        const relevanciaData = [
+            {
+                nivel: 'de extrema relevância, conforme a disposição "f" do subitem 18.11.5.6 do TR, que estabelece:',
+                citacao: 'f) Produtos relacionados às demandas estabelecidas como prioritárias pelo Ministério dos Transportes e/ou Presidência da INFRA S.A.'
+            },
+            {
+                nivel: 'de alta relevância, conforme a disposição "d" do subitem 18.11.5.7 do TR, que estabelece:',
+                citacao: 'd) Produtos relacionados às demandas estabelecidas como prioritárias pelas Diretorias da INFRA S.A.;'
+            },
+            {
+                nivel: 'de média relevância, conforme a disposição "h" do subitem 18.11.5.8 do TR, que estabelece:',
+                citacao: 'h) Produtos relacionados às demandas estabelecidas como prioritárias pela Superintendência e/ou Gerência;'
+            },
+            {
+                nivel: 'de baixa relevância, conforme a disposição "b" do subitem 18.11.5.9 do TR, que estabelece:',
+                citacao: 'b) Produtos relacionados às demandas envolvendo a transferência de conhecimento técnico de engenharia para os empregados da CONTRATANTE.'
+            },
+            {
+                nivel: 'de pouca relevância, conforme a disposição "a" do subitem 18.11.5.10 do TR, que estabelece:',
+                citacao: 'a) Produtos relacionados às outras demandas não indicadas como de extrema, alta, média ou baixa relevância.'
             }
         ];
 
@@ -583,23 +608,41 @@ Instrução e acompanhamento de Processos de Pagamentos; e,
                 compSelect.value = 3; // Pouco complexo por padrão
             }
 
+            const relSelect = document.getElementById('relevanciaSelect');
+            if (relSelect) {
+                relSelect.innerHTML = '';
+                relevanciaData.forEach((item, index) => {
+                    const opt = document.createElement('option');
+                    opt.value = index;
+                    opt.textContent = item.nivel;
+                    relSelect.appendChild(opt);
+                });
+                relSelect.value = 2; // Média relevância por padrão (índice 2)
+            }
+
             onFamiliaChangeSilently();
-            onComplexidadeChangeSilently();
             updatePreview();
         }
 
-        function onComplexidadeChangeSilently() {
+        function getComplexidadeCitacao() {
             const compSelect = document.getElementById('complexidadeSelect');
-            const citacaoInput = document.getElementById('citacaoComplexidade');
-            if (!compSelect || !citacaoInput) return;
+            if (!compSelect) return '';
             const selectedIndex = compSelect.value;
-            if (complexidadeData[selectedIndex]) {
-                citacaoInput.value = complexidadeData[selectedIndex].citacao;
-            }
+            return complexidadeData[selectedIndex] ? complexidadeData[selectedIndex].citacao : '';
+        }
+
+        function getRelevanciaCitacao() {
+            const relSelect = document.getElementById('relevanciaSelect');
+            if (!relSelect) return '';
+            const selectedIndex = relSelect.value;
+            return relevanciaData[selectedIndex] ? relevanciaData[selectedIndex].citacao : '';
         }
 
         function onComplexidadeChange() {
-            onComplexidadeChangeSilently();
+            updatePreview();
+        }
+
+        function onRelevanciaChange() {
             updatePreview();
         }
 
@@ -757,15 +800,20 @@ Instrução e acompanhamento de Processos de Pagamentos; e,
             
             const compSelect = document.getElementById('complexidadeSelect');
             const complexidade = compSelect ? compSelect.options[compSelect.selectedIndex].text : '';
-            const citacaoComplexidade = document.getElementById('citacaoComplexidade').value;
+            const citacaoComplexidade = getComplexidadeCitacao();
             
-            const relevancia = document.getElementById('relevancia').value;
+            const relSelect = document.getElementById('relevanciaSelect');
+            const relevancia = relSelect ? relSelect.options[relSelect.selectedIndex].text : '';
+            const citacaoRelevancia = getRelevanciaCitacao();
             
             const ferroviaChecked = document.querySelector('input[name="ferrovia"]:checked');
             const ferrovia = ferroviaChecked ? ferroviaChecked.value : 'geral';
-            const ferroviaHtml = ferrovia === 'geral' 
-                ? '<strong>FERROVIA/LOTE: </strong>(X) Geral ( ) EF-232-Ferrovia Transnordestina.' 
-                : '<strong>FERROVIA/LOTE: </strong>( ) Geral (X) EF-232-Ferrovia Transnordestina.';
+            let ferroviaText = 'Geral.';
+            if (ferrovia === 'ef232') ferroviaText = 'EF-232 – Ferrovia Transnordestina.';
+            else if (ferrovia === 'ef151') ferroviaText = 'EF-151 – Ferrovia Norte Sul.';
+            else if (ferrovia === 'ef334') ferroviaText = 'EF-334 – Ferrovia de Integração Oeste-Leste.';
+            else if (ferrovia === 'ef354') ferroviaText = 'EF-354 – Ferrovia de Integração Centro-Oeste.';
+            const ferroviaHtml = `<strong>FERROVIA/LOTE: </strong>${ferroviaText}`;
             
             const multiplaChecked = document.querySelector('input[name="multipla"]:checked');
             const multipla = multiplaChecked ? multiplaChecked.value : 'nao';
@@ -866,7 +914,7 @@ Instrução e acompanhamento de Processos de Pagamentos; e,
                 <p class="sei-citation" data-id="el-citacaocomplexidade">${citacaoComplexidade}</p>
 
                 <p class="sei-paragraph-num-n1" data-id="el-relevancia">8. <strong>RELEVÂNCIA: </strong>${relevancia}</p>
-                <p class="sei-citation">h) Produtos relacionados às demandas estabelecidas como prioritárias pela Superintendência e/ou Gerência;</p>
+                <p class="sei-citation" data-id="el-citacaorelevancia">${citacaoRelevancia}</p>
 
                 <p class="sei-paragraph-num-n1">9. ${ferroviaHtml}</p>
                 <p class="sei-paragraph-num-n1">10. ${multiplaHtml}</p>
@@ -1044,9 +1092,8 @@ Instrução e acompanhamento de Processos de Pagamentos; e,
             document.getElementById('materialApoio').value = 'Não enviado.';
             
             document.getElementById('complexidadeSelect').value = 3;
-            onComplexidadeChange();
-
-            document.getElementById('relevancia').value = 'de média relevância, conforme a disposição "h" do subitem 18.11.5.8. do TR, que estabelece:';
+            document.getElementById('relevanciaSelect').value = 2;
+            
             document.getElementById('unidadeSuproSelect').value = 'SUPRO';
             document.getElementById('unidadeSuproCustom').classList.add('hidden');
             document.getElementById('unidadeSuproCustom').value = '';
